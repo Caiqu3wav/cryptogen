@@ -5,6 +5,8 @@ import (
 	"net/http"
     "github.com/gorilla/mux"
 	"cryptogen/src/pkg/database"
+	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 )
 
 func main() {
