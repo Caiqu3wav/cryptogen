@@ -15,7 +15,7 @@ const {data: session} = useSession();
 
   return (
     <header className='flex fixed top-0 z-50 justify-between items-center
-     bg-gradient-to-b from-blue-300 to-black h-32 px-3 w-full'>
+     bg-gradient-to-b from-blue-300 to-transparent h-32 px-3 w-full'>
       <Link href="/" className='flex items-center border-solid border-r-2 rounded-3xl border-white pr-6 h-full'>
       <Image src={cyberGenLogo} className="w-20 rounded-full"  alt="logo" />
       </Link>
@@ -23,7 +23,7 @@ const {data: session} = useSession();
       <div className='w-fit'>
       {!session ? (
         <>
-        <Link href='/login' className='w-[100px] flex items-center justify-around h-8 
+        <Link href={'/auth'} className='w-[100px] flex items-center justify-around h-8 
       rounded-lg bg-gradient-to-br from-purple-600 to-black text-white'>
         <p>Login</p> 
       <IoAccessibility size={20}/>

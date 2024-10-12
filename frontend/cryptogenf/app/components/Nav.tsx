@@ -43,12 +43,20 @@ export default function Nav() {
       path: '/explore',
     },
     {
-      title: 'Historia e referências',
-      path: '/historiaref',
+      title: 'About',
+      path: '/about',
     },
     {
-      title: 'Sobre',
-      path: '/about',
+      title: 'MarketPlace',
+      path: '/marketplace',
+    },
+    {
+      title: 'Collections',
+      path: '/collections',
+    },
+    {
+      title: 'Artists',
+      path: '/artists',
     },
   ];
 

@@ -93,7 +93,7 @@ import { useRouter } from 'next/navigation'
                 {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
                 {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
                        <button type='submit'>Login</button>
-            <p>Don't have your account yet? Go to signup: </p> <a href="/signup" className='text-white'>Register</a>	
+            <p>Don't have your account yet? Go to signup: </p> <a href="/auth/register" className='text-white'>Register</a>	
         </form>
          )}
         </div>
