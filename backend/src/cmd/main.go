@@ -5,6 +5,7 @@ import (
 	"net/http"
     "github.com/gorilla/mux"
 	"cryptogen/src/pkg/database"
+	"cryptogen/src/pkg/routes"
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 )
@@ -23,8 +24,8 @@ func main() {
 
 	database.AutoMigrate(database.DB)
 
-
 	r := mux.NewRouter()
+	routes.RegisterRoutes(r)
 
 	corsOptions := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"},
