@@ -1,0 +1,94 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, {useState, useEffect} from 'react'
+import SearchInput from '../ui/SearchInput.jsx';
+import Link from 'next/link';
+import { GiHamburgerMenu } from 'react-icons/gi';
+
+export default function Nav() {
+  const [isActive, setIsActive] = useState(false);
+
+  
+  const toggleMenu = () => {
+    setIsActive(!isActive);
+  }
+
+  useEffect(() => {
+    const handleEscKeyPress = (e: any) => {
+      if (e.keycode === 27 && isActive) {
+        setIsActive(false);
+      }
+    };
+
+    if (isActive) {
+      document.body.style.setProperty("overflow", "hidden");
+    } else {
+      document.body.style.setProperty("overflow", "auto");
+    }
+
+    document.addEventListener("keydown", handleEscKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscKeyPress);
+    };
+  }, [isActive]);
+
+
+  const sideList = [
+    {
+      title: 'Home',
+      path: '/',
+    },
+    {
+      title: 'Explore',
+      path: '/explore',
+    },
+    {
+      title: 'Historia e referências',
+      path: '/historiaref',
+    },
+    {
+      title: 'Sobre',
+      path: '/about',
+    },
+  ];
+
+  return (     
+    <>
+    <nav className='flex flex-col gap-2 items-center'>
+      <SearchInput/>
+      <ul className='flex gap-6 items-center text-rose-300 majorfour2:hidden'>
+        <li>Explore</li>
+        <li>About</li>
+        <li>MarketPlace</li>
+        <li>Collections</li>
+        <li>Artists</li>
+      </ul>
+      <button aria-label="Open Menu" onClick={toggleMenu} className="btn-hamburguer hidden majorfour2:flex">
+          <GiHamburgerMenu size={45} className="text-white" />
+        </button>
+    </nav>
+     {isActive && (
+      <div className="z-10 fixed inset-0 transition-opacity">
+        <div
+          onClick={() => setIsActive(false)}
+          className="absolute inset-0 bg-black opacity-50"
+          tabIndex="0"
+        ></div>
+      </div>
+    )}
+
+    <aside
+      className={`transform bg-gradient-to-b from-black to-blue-500 top-0 left-0 w-64 lowtwo2:w-44 lowthreetwo:w-36 text-white font-extrabold fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 ${isActive ? "translate-x-0" : "-translate-x-full"
+        }`}
+    >
+      {sideList.map(({ title, path }, index) => (
+        <Link href={path} key={index}>
+          <span className="flex items-center p-4 hover:bg-purple-500 hover:text-black">
+            <span className="border-b-4 border-purple-950">{title}</span>
+          </span>
+        </Link>
+      ))}
+    </aside>
+    </>
+)
+}
