@@ -56,6 +56,7 @@ import Link from 'next/link'
      <>
         <Header/>
         <div className='flex justify-center items-center h-screen bg-gradient-to-b from-mainSecondColor to-mainColor'>
+          <div className='bg-white rounded-xl flex items-center flex-col p-5'>
         {isLoading && (
       <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
         )} 
@@ -112,9 +113,10 @@ import Link from 'next/link'
                         </label>
                             <button type='submit'>Sign</button>
                     <p>Already have your account yet? Go to login: </p>
-                     <Link href='/login' className='text-blue-600'>Login</Link>
+                     <Link href='/auth/login' className='text-blue-600'>Login</Link>
                      </form>
          )}
+         </div>
         </div>
      </>
    )

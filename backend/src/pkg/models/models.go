@@ -16,7 +16,7 @@ type User struct {
 }
 
 type Collection struct {
-	ID		uuid.UUID 	`gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	Id	uuid.UUID 	`gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	Name	string 	   `gorm:"type:varchar(100);not null"`
 	Description string `gorm:"type:text"`
 	ImageUrl string    `gorm:"type:varchar(255)"`
@@ -29,7 +29,7 @@ type Collection struct {
 }
 
 type NFT struct {
-	ID		uuid.UUID 	`gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	Id		uuid.UUID 	`gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	Name	string 	   `gorm:"type:varchar(100);not null"`
 	Description string `gorm:"type:text"`
 	ImageUrl string    `gorm:"type:varchar(255)"`
@@ -45,7 +45,7 @@ type NFT struct {
 }
 
 type Transaction struct {
-	ID 		uuid.UUID 	`gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	Id 		uuid.UUID 	`gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	NFTId   uuid.UUID `gorm:"type:uuid;not null"`
 	BuyerId   uint      `gorm:"not null"`
 	SellerId  uint      `gorm:"not null"`

@@ -22,7 +22,7 @@ export const authOptions: AuthOptions = {
             });
 
             const user = {
-              id: response.data.user.ID,
+              id: response.data.user.Id,
               name: response.data.user.Name,
               email: response.data.user.Email,
               profileImage: response.data.user.ProfileImage,
