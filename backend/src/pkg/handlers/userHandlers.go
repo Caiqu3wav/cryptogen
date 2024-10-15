@@ -111,7 +111,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		params := mux.Vars(r)
 		var user models.User
 
-		if err := database.DB.Find(&user, params["id"]).Error; err != nil {
+		if err := database.DB.First(&user, "id = ?", params["id"]).Error; err != nil {
 			http.Error(w, "Usuário não encontrado", http.StatusInternalServerError)
 		return
 		}

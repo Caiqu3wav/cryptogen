@@ -14,3 +14,10 @@ export interface userDataI {
     email: string;
     profilePic: string;
 }
+
+export interface userApiDataI {
+    Id: string;
+    Name: string;
+    Email: string;
+    ProfileImage: string;
+}

@@ -8,6 +8,7 @@ import { BsEyeSlashFill } from "react-icons/bs"
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import Link from 'next/link'
+import { defaultPfpImages } from '@/app/utils'
 
  export default function SignUp() {
   const [name, setName] = useState('');
@@ -19,6 +20,7 @@ import Link from 'next/link'
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const randomPfp = defaultPfpImages[Math.floor(Math.random() * defaultPfpImages.length)]
  
   const handleSignup = async (e: any) => {
     e.preventDefault();
@@ -35,7 +37,8 @@ import Link from 'next/link'
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/register`, {
         name,
         email,
-        password
+        password,
+        ProfileImage: randomPfp
       });
 
       setIsLoading(false);
