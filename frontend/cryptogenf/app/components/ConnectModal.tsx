@@ -27,6 +27,7 @@ export default function ConnectModal() {
         </div>
 
         <div>
+        <p className="pt-3 text-xs uppercase text-slate-500">Other</p>
           <Link href={'/auth/login'} className="mt-3 w-full flex items-center justify-center border border-slate-300 py-2 px-4 text-sm text-slate-600 transition-all hover:text-white hover:bg-slate-800">
             <MdOutlineMailLock size={20} color="blue" className="mr-2" />
             Connect with Email
@@ -34,7 +35,6 @@ export default function ConnectModal() {
         </div>
         
         <div>
-          <p className="pt-3 text-xs uppercase text-slate-500">Other</p>
           <Link href={'/auth/register'} className="mt-3 w-full flex items-center justify-center border border-slate-300 py-2 px-4 text-sm text-slate-600 transition-all hover:text-white hover:bg-slate-800">
             <MdAssignment size={20} color="blue" className="mr-2" />
             SignUp

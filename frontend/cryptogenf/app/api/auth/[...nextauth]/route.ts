@@ -47,6 +47,7 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id as string;
         session.user.name = token.name as string;
         session.user.email = token.email as string;
+        session.user.profileImage = token.picture as string;
       }
       return session;
     },
@@ -55,7 +56,8 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-      }
+        token.picture = user.profileImage;
+            }
       return token;
     }
     }

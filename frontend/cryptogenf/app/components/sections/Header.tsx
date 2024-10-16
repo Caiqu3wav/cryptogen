@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import cyberGenLogo from '@/public/assets/logo.png'
 import Image from 'next/image'
 import Nav from '../Nav'
@@ -12,6 +12,12 @@ import { CgProfile } from "react-icons/cg";
 export default function Header() {
 const {data: session} = useSession();
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (session) {
+      console.log(session.user.profileImage);
+    }
+  }, [session]);
 
   return (
     <header className='flex fixed top-0 z-50 justify-between items-center
@@ -33,8 +39,8 @@ const {data: session} = useSession();
         <>
         <p className='mr-6 text-white'>{session.user?.name}</p>
         <button onClick={() => setProfileModalOpen(!profileModalOpen)} className='mr-6'>
-          {session.user?.profilePic ? (
-            <Image src={session.user.profilePic} alt='profile pic' className='rounded-full w-[60px]'/>
+          {session.user?.profileImage ? (
+            <img src={session.user.profileImage} alt='profile pic' className='rounded-full w-[60px]'/>
           ) : (
             <CgProfile size={60} className='text-white'/>
           )}

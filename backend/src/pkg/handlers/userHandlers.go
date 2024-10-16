@@ -15,6 +15,7 @@ type Credentials struct {
 	Name string `json:"name"`
 	Email string `json:"email"`
 	Password string `json:"password"`
+	ProfileImage string `json:"profileImage"`
 }
 
 func SignIn(w http.ResponseWriter, r *http.Request) {
@@ -46,6 +47,8 @@ func hashPassword(password string) (string, error)  {
 	return string(bytes), err
 }
 
+
+
 func SignUp(w http.ResponseWriter, r *http.Request) {
 	var creds Credentials
 	var user models.User
@@ -61,7 +64,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user = models.User{Name: creds.Name, Email: creds.Email, Password: hashedPassword}
+	user = models.User{Name: creds.Name, Email: creds.Email, Password: hashedPassword, ProfileImage: creds.ProfileImage}
 
 	if err := database.DB.Create(&user).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
