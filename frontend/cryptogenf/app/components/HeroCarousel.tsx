@@ -10,7 +10,6 @@ import 'swiper/css/pagination'
 import '../styles/caroulsel.css'
 
 export default function HeroCarousel() {
-  
 
   return (
     <div className="flex w-full h-fit min-h-52 items-center justify-center">
@@ -28,7 +27,7 @@ export default function HeroCarousel() {
             <SwiperSlide className='min-h-fit py-8' key={nft.id}>
                     <div className='flex flex-col items-center gap-3 justify-center h-fit text-white'>
                         <img src={nft.image} alt={nft.name} className='w-[200px] h-[200px] majortwo1:w-[135px] majortwo1:h-[135px]
-                         majorfour:w-[200px] majorfour:h-[200px]' />
+                         majorfour:w-[200px] majorfour:h-[200px] midtw:w-[120px] midtw:h-[130px]' />
                         <p className='text-white'>{nft.name}</p>
                         <p>{nft.description}</p>
                         <p className='text-white'>{nft.price}</p>

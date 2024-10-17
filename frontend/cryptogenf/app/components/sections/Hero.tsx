@@ -1,10 +1,11 @@
+
 /* eslint-disable react/no-unescaped-entities */
 import HeroCarousel from '../HeroCarousel';
 
 export default function Hero() {
   return (
     <section className="hero-sec flex w-full gap-6 px-3 xl:px-[3%] majorfour:flex-col justify-center items-center min-h-[600px] bg-opacity-65">
-      <div className="flex flex-col w-2/3 items-center gap-3 text-white">
+      <div className="flex flex-col w-2/3 majorfour:w-full items-center gap-3 text-white">
       <h1>NTF'S</h1>
       <p>The modern decentralizated generation that provides
         trade and merch of modern products and coins
