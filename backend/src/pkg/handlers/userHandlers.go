@@ -122,3 +122,27 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type,", "application/json")
 		json.NewEncoder(w).Encode(user)
 }
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var user models.User
+
+	if err := database.DB.First(&user, "id = ?", params["id"]).Error; err != nil {
+		http.Error(w, "Usuário não encontrado", http.StatusInternalServerError)
+		return
+	}
+
+	var updates map[string]interface{}
+	if err := json.NewDecoder(r.Body).Decode(&updates); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Atualizar apenas os campos enviados no JSON
+	if err := database.DB.Model(&user).Updates(updates).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(user)
+}

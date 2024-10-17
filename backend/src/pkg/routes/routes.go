@@ -15,4 +15,7 @@ func RegisterRoutes(r *mux.Router) {
 	r.HandleFunc("/users", handlers.GetUsers).Methods("GET").Name("getUsers")
 
 	r.HandleFunc("/user/{id}", handlers.GetUser).Methods("GET").Name("getUser")
+	
+	r.HandleFunc("/user/{id}", handlers.UpdateUser).Methods("PUT").Name("updateUser")
+
 }
