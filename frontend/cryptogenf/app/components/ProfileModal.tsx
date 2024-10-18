@@ -38,7 +38,7 @@ export default function ProfileModal({isOpen, setIsOpen}: ModalProps) {
       <hr />
       <Link href="" className='flex items-center'><GiTrade size={20}/> <strong className='ml-2'>Deals</strong></Link>
       <hr />
-      <Link href="" className='flex items-center'><BsTools size={20}/> <strong className='ml-2'>Create</strong></Link>
+      <Link href="/create" className='flex items-center'><BsTools size={20}/> <strong className='ml-2'>Create</strong></Link>
       <hr />
       <Link href="" className='flex items-center'><IoSettings size={20}/> <strong className='ml-2'>Settings</strong></Link>
       </div>

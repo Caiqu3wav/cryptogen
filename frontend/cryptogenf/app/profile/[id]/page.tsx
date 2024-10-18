@@ -14,6 +14,7 @@ export default function Profile() {
     const [loading, setLoading] = useState(true);
     const [userProfileData, setUserProfileData] = useState<userApiDataI>();
     const [editMode, setEditMode] = useState(false);
+    const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
 
     const pathParts = pathname.split('/');
     const userId = pathParts[pathParts.length - 1];
@@ -25,8 +26,8 @@ export default function Profile() {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId.toString()}`);
                 if (res.ok) {
                     const userData = await res.json();
-                    console.log(userData);
                     setUserProfileData(userData);
+                    setProfileImage(userData.ProfileImage);
                 } else {
                     setError("Erro ao encontrar usuário");
                 }
@@ -43,16 +44,20 @@ export default function Profile() {
     const updateUserProfileData = async (e: any) => {
         e.preventDefault();
 
+        const formData = {
+            name: e.target.name.value,
+            email: e.target.email.value,
+            profileImage: profileImage || userProfileData?.ProfileImage
+        };
+
+
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId.toString()}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    name: e.target.name.value,
-                    email: e.target.email.value
-                })
+                body: JSON.stringify(formData)
             });
             if (res.ok) {
                 const userData = await res.json();
@@ -67,6 +72,27 @@ export default function Profile() {
         }
     }
 
+    const handleProfileImageChange = async (e: any) => {
+        const file = e.target.files[0];
+      
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const res = await fetch('/api/upload', {
+                method: 'PUT',
+                body: formData
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                setProfileImage(data.url);
+            } else {
+                setError("Erro ao atualizar imagem de perfil");
+                console.error("Erro ao enviar a imagem:", data.message);
+            }
+        }   
+    };
 
     return (
         <>
@@ -83,22 +109,29 @@ export default function Profile() {
                     </>
                 ) : (
                     <div className="bg-slate-50 min-h-[450px] min-w-[300px] rounded-lg flex flex-col items-center justify-around py-2">
-                        {session?.user.id == userProfileData?.Id ? (
-                            <div onClick={() => setEditMode(true)} className="relative w-fit h-fit group cursor-pointer">
-                        <img src={userProfileData?.ProfileImage} className="w-[120px] rounded-xl object-cover group-hover:brightness-50" alt="" />
-
-                        <div className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 
-                        transition-opacity duration-300"><CiEdit size={30} color="white"/></div>
-                        </div>
-                        )
-                     : (
-                        <img src={userProfileData?.ProfileImage} className="w-[120px] rounded-xl" alt="" />
-                     )}
+                        {!editMode && <img src={profileImage} className="w-[120px] rounded-xl" alt="user profile image" />}
                         <div className="flex flex-col items-center">
                             {editMode ? (
                                 <form onSubmit={updateUserProfileData} className="flex flex-col gap-3">
-                                    <input type="text" placeholder={userProfileData?.Name} required name="name" className="bg-slate-200 px-4 py-2 rounded-lg mt-5" />
-                                    <input type="email" name="email" placeholder={userProfileData?.Email} required className="bg-slate-200 px-4 py-2 rounded-lg mt-2" />
+                                    <div className="self-center w-fit h-fit cursor-pointer">
+                                        <label htmlFor="profileImage">
+                                            <img src={userProfileData?.ProfileImage}
+                                                className="w-[120px] rounded-xl object-cover group-hover:brightness-50"
+                                                alt="Profile" />
+                                            <div className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <CiEdit size={30} color="white" />
+                                            </div>
+                                        </label>
+                                        <input
+                                            id="profileImage"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleProfileImageChange}
+                                            className="hidden"
+                                        />
+                                    </div>
+                                    <input type="text" defaultValue={userProfileData?.Name} required name="name" className="bg-slate-200 px-4 py-2 rounded-lg mt-5" />
+                                    <input type="email" name="email" defaultValue={userProfileData?.Email} required className="bg-slate-200 px-4 py-2 rounded-lg mt-2" />
                                     <button type="submit" className="bg-mainColor text-slate-50 px-4 py-2 rounded-lg mt-5">Save</button>
                                 </form>
                             ) : (
@@ -110,11 +143,11 @@ export default function Profile() {
                         </div>
                         {session?.user.id == userProfileData?.Id && (
                             <>
-                            <button onClick={() => setEditMode(!editMode)} className="bg-mainColor text-slate-50 px-4 py-2 rounded-lg mt-5"><h2>{editMode ? "Apenas visualisar" : "Editar perfil"}</h2></button>
-                        <button className="bg-red-500 text-slate-50 px-4 py-2 rounded-lg mt-2">Delete Account</button>
-                        <button className="bg-mainColor text-slate-50 px-4 py-2 rounded-lg mt-2">Logout</button>
-                        </>
-                    )}
+                                <button onClick={() => setEditMode(!editMode)} className="bg-mainColor text-slate-50 px-4 py-2 rounded-lg mt-5"><h2>{editMode ? "Apenas visualisar" : "Editar perfil"}</h2></button>
+                                <button className="bg-red-500 text-slate-50 px-4 py-2 rounded-lg mt-2">Delete Account</button>
+                                <button className="bg-mainColor text-slate-50 px-4 py-2 rounded-lg mt-2">Logout</button>
+                            </>
+                        )}
                     </div>
                 )}
             </div>
