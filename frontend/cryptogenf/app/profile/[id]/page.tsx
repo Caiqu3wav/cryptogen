@@ -8,7 +8,7 @@ import { userApiDataI } from "@/app/types";
 import { CiEdit } from 'react-icons/ci';
 
 export default function Profile() {
-    const { data: session } = useSession();
+    const { data: session, update } = useSession();
     const pathname = usePathname();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
@@ -59,6 +59,8 @@ export default function Profile() {
             if (res.ok) {
                 const userData = await res.json();
                 setUserProfileData(userData);
+
+                await update();
                 setEditMode(false);
             } else {
                 setError("Erro ao atualizar usuário");
@@ -83,8 +85,20 @@ export default function Profile() {
 
             const data = await res.json();
             if (res.ok) {
-                setProfileImage(data.url);
-            } else {
+                setUserProfileData((prevData) => {
+                    if (!prevData) {
+                      return {
+                        Id: '', Name: '',  Email: '', ProfileImage: data.imageUrl,
+                      };
+                    }
+
+                    return {
+                      ...prevData,
+                      ProfileImage: data.imageUrl,
+                    };
+                  });    
+                  setProfileImage(data.imageUrl);
+                        } else {
                 setError("Erro ao atualizar imagem de perfil");
                 console.error("Erro ao enviar a imagem:", data.message);
             }
@@ -106,7 +120,7 @@ export default function Profile() {
                     </>
                 ) : (
                     <div className="bg-slate-50 min-h-[450px] min-w-[300px] rounded-lg flex flex-col items-center justify-around py-2">
-                        {!editMode && <img src={profileImage} className="w-[120px] rounded-xl" alt="user profile image" />}
+                        {!editMode && <img src={userProfileData?.ProfileImage} className="w-[120px] rounded-xl" alt="user profile image" />}
                         <div className="flex flex-col items-center">
                             {editMode ? (
                                 <form onSubmit={updateUserProfileData} className="flex flex-col gap-3">
