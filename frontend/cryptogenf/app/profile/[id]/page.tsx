@@ -44,20 +44,17 @@ export default function Profile() {
     const updateUserProfileData = async (e: any) => {
         e.preventDefault();
 
-        const formData = {
-            name: e.target.name.value,
-            email: e.target.email.value,
-            profileImage: profileImage || userProfileData?.ProfileImage
-        };
-
-
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId.toString()}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({ 
+                    name: e.target.name.value,
+                    email: e.target.email.value, 
+                    profile_image: profileImage || userProfileData?.ProfileImage 
+                })
             });
             if (res.ok) {
                 const userData = await res.json();
@@ -80,7 +77,7 @@ export default function Profile() {
             formData.append('file', file);
 
             const res = await fetch('/api/upload', {
-                method: 'PUT',
+                method: 'POST',
                 body: formData
             });
 
@@ -114,7 +111,7 @@ export default function Profile() {
                             {editMode ? (
                                 <form onSubmit={updateUserProfileData} className="flex flex-col gap-3">
                                     <div className="self-center w-fit h-fit cursor-pointer">
-                                        <label htmlFor="profileImage">
+                                        <label htmlFor="profileImage" className="relative w-fit h-fit group cursor-pointer">
                                             <img src={userProfileData?.ProfileImage}
                                                 className="w-[120px] rounded-xl object-cover group-hover:brightness-50"
                                                 alt="Profile" />
@@ -127,8 +124,8 @@ export default function Profile() {
                                             type="file"
                                             accept="image/*"
                                             onChange={handleProfileImageChange}
-                                            className="hidden"
-                                        />
+                                            className="hidden z-50 cursor-pointer"
+                                            />
                                     </div>
                                     <input type="text" defaultValue={userProfileData?.Name} required name="name" className="bg-slate-200 px-4 py-2 rounded-lg mt-5" />
                                     <input type="email" name="email" defaultValue={userProfileData?.Email} required className="bg-slate-200 px-4 py-2 rounded-lg mt-2" />
