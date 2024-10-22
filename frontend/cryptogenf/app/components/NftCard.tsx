@@ -10,8 +10,9 @@ export default function NftCard() {
         <img src={`/${nft.image}`} className='w-[210px] h-[210px]' alt={nft.name}/>
         <div className='flex flex-col gap-2'>
         <h1>{nft.name}</h1>
-        <p className='text-green-500 self-center'>${nft.price}</p>
-        </div>
+        <p className='text-green-500 self-center'>
+              {nft.price.toFixed(2)} Ξ
+            </p>        </div>
     </div>
           ))}
     </>
