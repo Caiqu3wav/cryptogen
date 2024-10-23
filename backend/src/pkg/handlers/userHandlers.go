@@ -48,7 +48,6 @@ func hashPassword(password string) (string, error)  {
 }
 
 
-
 func SignUp(w http.ResponseWriter, r *http.Request) {
 	var creds Credentials
 	var user models.User
@@ -65,29 +64,6 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user = models.User{Name: creds.Name, Email: creds.Email, Password: hashedPassword, ProfileImage: creds.ProfileImage}
-
-	if err := database.DB.Create(&user).Error; err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(user)
-}
-
-func CreateUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	hashedPassword, err := hashPassword(user.Password)
-	if err != nil {
-		http.Error(w, "Falha ao encriptar senha", http.StatusInternalServerError)
-		return
-	}
-	user.Password = hashedPassword
 
 	if err := database.DB.Create(&user).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

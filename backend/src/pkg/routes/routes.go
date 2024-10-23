@@ -6,8 +6,6 @@ import (
 )
 
 func RegisterRoutes(r *mux.Router) {
-	r.HandleFunc("/users", handlers.CreateUser).Methods("POST").Name("createUser")
-
 	r.HandleFunc("/login", handlers.SignIn).Methods("POST").Name("login")
 
 	r.HandleFunc("/register", handlers.SignUp).Methods("POST").Name("register")
@@ -18,4 +16,5 @@ func RegisterRoutes(r *mux.Router) {
 	
 	r.HandleFunc("/user/{id}", handlers.UpdateUser).Methods("PUT").Name("updateUser")
 
+	r.HandleFunc("/nft", handlers.CreateNft).Methods("POST").Name("createNft")
 }
