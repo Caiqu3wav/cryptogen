@@ -15,7 +15,7 @@ type NftCredentials struct {
 	Description string `json:"description"`
 	ImageUrl string `json:"imageUrl"`
 	Tags []string `json:"tags"`
-	OwnerId uuid.UUID `json:"ownerId"`
+	OwnerId uuid.UUID `json:"owner_id"`
 	Category string `json:"category"`
 	Price float64 `json:"price"`
 }
@@ -27,6 +27,12 @@ func CreateNft(w http.ResponseWriter, r *http.Request){
 	if err := json.NewDecoder(r.Body).Decode(&creds); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return 
+	}
+
+	var owner models.User
+	if err := database.DB.First(&owner, "id = ?", creds.OwnerId).Error;  err != nil {
+		http.Error(w, "Usuário não encontrado", http.StatusBadRequest)
+		return
 	}
 
 	nft = models.NFT{Name: creds.Name, Description: creds.Description, ImageUrl: creds.ImageUrl, Tags: creds.Tags, OwnerId:  creds.OwnerId, Category:  creds.Category, Price: creds.Price}
@@ -45,7 +51,7 @@ func GetNft(w http.ResponseWriter, r *http.Request) {
 	var nft models.NFT
 
 	if err := database.DB.First(&nft, "id = ?", params["id"]).Error; err != nil {
-		http.Error(w, "Nft não encontrado", http.StatusInternalServerError)
+		http.Error(w, "Nft não encontrado", http.StatusNotFound)
 		return 
 	}
 
@@ -65,7 +71,7 @@ func GetNfts(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(nfts)
 }
 
-func UpdateNfts(w http.ResponseWriter, r *http.Request) {
+func UpdateNft(w http.ResponseWriter, r *http.Request) {
 		params := mux.Vars(r)
 		var nft models.NFT
 
@@ -88,3 +94,20 @@ func UpdateNfts(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(nft)
 		}
+
+	func DeleteNft(w http.ResponseWriter, r *http.Request) {
+		params := mux.Vars(r)
+		var nft models.NFT
+
+		if err := database.DB.First(&nft, "id = ?", params["id"]).Error; err != nil {
+			http.Error(w, "Nft não encontrado", http.StatusInternalServerError)
+			return
+		}
+
+		if err := database.DB.Delete(&nft).Error; err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+	}
