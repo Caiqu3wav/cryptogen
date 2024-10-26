@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function Create() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter(); 
 
   useEffect(() => {
@@ -22,8 +22,8 @@ export default function Create() {
     return (
         <>
            <Header/>
-          <div className='flex items-center h-screen bg-gradient-to-b hero-sec min-h-[600px]'>
-            <div className='bg-white h-screen'>
+          <div className='flex items-center justify-center h-screen bg-gradient-to-b hero-sec min-h-[600px] text-mainColor'>
+            <div className='h-screen'>
               <div>
               <h1 className='text-3xl'>Create What You Want...</h1>
               <p>It's Simple</p>

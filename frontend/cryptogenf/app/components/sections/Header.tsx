@@ -7,7 +7,8 @@ import Link from 'next/link'
 import { IoAccessibility } from "react-icons/io5"
 import {useSession} from 'next-auth/react'
 import ProfileModal from '../ProfileModal'
-import { CgProfile } from "react-icons/cg";
+import { CgProfile } from "react-icons/cg"
+import { FaRegSquarePlus } from "react-icons/fa6";
 
 export default function Header() {
 const {data: session} = useSession();
@@ -36,7 +37,7 @@ const {data: session} = useSession();
       </Link>
       </>
     ) : (
-        <>
+        <div className='flex flex-col items-center justify-center gap-2'>
         <p className='mr-6 text-white'>{session.user?.name}</p>
         <button onClick={() => setProfileModalOpen(!profileModalOpen)} className='mr-6'>
           {session.user?.profileImage ? (
@@ -45,8 +46,13 @@ const {data: session} = useSession();
             <CgProfile size={60} className='text-white'/>
           )}
         </button>
+        <Link href={'/create'} className='w-[100px] flex items-center justify-around h-8
+      rounded-lg bg-gradient-to-br from-purple-600 to-black text-white'>
+              <FaRegSquarePlus size={20}/>
+        <p>Create</p>
+      </Link>
       {profileModalOpen && <ProfileModal isOpen={profileModalOpen} setIsOpen={setProfileModalOpen}/>}
-      </>
+      </div>
     )
   }
       </div>
