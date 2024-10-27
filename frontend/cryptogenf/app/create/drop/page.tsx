@@ -1,6 +1,9 @@
 import Header from "@/app/components/sections/Header";
 
 export default function CreateDrop() {
+
+
+    
     return (
         <>
             <Header />

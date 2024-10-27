@@ -1,6 +1,13 @@
+'use client'
 import Header from "@/app/components/sections/Header";
 
 export default function CreateNFTItem() {
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        // Handle form submission here
+    }
+
     return (
         <>
             <Header />
@@ -9,7 +16,7 @@ export default function CreateNFTItem() {
                     <div>
                         <h1 className='text-3xl'>Create a new NFT item</h1>
                     </div>
-                    <form action="" className="flex flex-col gap-3">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                         <div>
                             <label htmlFor="name">NFT Name</label>
                             <input type="text" className="ml-3 bg-gray-400 rounded-md" name="name" id="name" />

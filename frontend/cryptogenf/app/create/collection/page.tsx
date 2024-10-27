@@ -2,8 +2,8 @@
 import Header from "@/app/components/sections/Header"
 import { useSession } from "next-auth/react"
 import { useState } from 'react'
-import { MdError } from "react-icons/md";
-import TagInput from "@/app/components/TagInput";
+import { MdError } from "react-icons/md"
+import TagInput from "@/app/components/TagInput"
 
 export default function Collection() {
     const [isError, setIsError] = useState(false);
@@ -14,9 +14,32 @@ export default function Collection() {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
+        if (!e.target.name.value || !e.target.description.value || tags.length === 0) {
+            alert("Por favor, preencha todos os campos obrigatórios.");
+            setIsLoading(false);
+            return;
+        }
+
         setIsLoading(true);
 
         try {
+
+            const imageFile = e.target.image.files[0];
+            const formData = new FormData();
+            formData.append('file', imageFile);
+
+            const uploadRes = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!uploadRes.ok) {
+                throw new Error('Failed to upload image');
+            }
+
+            const uploadData = await uploadRes.json();
+            const imageUrl = uploadData.imageUrl;
+
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/collection`, {
                 method: 'POST',
                 headers: {
@@ -28,10 +51,14 @@ export default function Collection() {
                     ownerId: session?.user.id,
                     tags: tags,
                     category: e.target.category.value,
-                    imageUrl: e.target.image.value,
+                    imageUrl: imageUrl,
                     blockchain: e.target.blockchain.value
                 })
             });
+
+            if (!res.ok) {
+                throw new Error('Failed to create collection');
+            }
 
             const data = await res.json();
             console.log(data);
@@ -57,7 +84,7 @@ export default function Collection() {
                     </div>
                 ) : (
 
-                    <div className='h-screen text-white'>
+                    <div className='h-screen mt-5 text-white'>
                         <div>
                             <h1 className='text-3xl'>Create a new collection</h1>
                         </div>
@@ -86,15 +113,12 @@ export default function Collection() {
                                 <label htmlFor="blockchain">Blockchain</label>
                                 <select className="ml-3 bg-gray-400 rounded-md" name="blockchain" id="blockchain">
                                     <option value="ethereum">
-                                        <div>
                                             Ethereum
-                                        </div>
                                     </option>
                                 </select>
                             </div>
                             <button type="submit" className="px-8 py-2 rounded-xl bg-mainColor">Create</button>
                         </form>
-
                     </div>
                 )
                 }
