@@ -4,12 +4,37 @@ import { useSession } from "next-auth/react"
 import { useState } from 'react'
 import { MdError } from "react-icons/md"
 import TagInput from "@/app/components/TagInput"
+import { BsFillCloudUploadFill } from "react-icons/bs"
+import "../../styles/fileInput.css"
+import { FaEthereum } from "react-icons/fa";
 
 export default function Collection() {
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { data: session } = useSession();
     const [tags, setTags] = useState<string[]>([]);
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+    const handleImageChange = (file: File | null) => {
+        setSelectedImage(file);
+        if (file) {
+            setPreviewImage(URL.createObjectURL(file));
+        } else {
+            setPreviewImage(null);
+        }
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file) handleImageChange(file);
+    };
+
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] || null;
+        handleImageChange(file);
+    };
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -89,33 +114,67 @@ export default function Collection() {
                             <h1 className='text-3xl'>Create a new collection</h1>
                         </div>
                         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                            <div>
-                                <label htmlFor="name">Collection Name</label>
-                                <input type="text" className="ml-3 bg-gray-400 rounded-md" name="name" id="" />
+                            <div className="flex gap-2">
+                                <div>
+                                    <label htmlFor="name">Collection Name</label>
+                                    <input type="text" className="ml-3 bg-gray-400 rounded-md" name="name" id="" />
+                                </div>
+                                <div>
+                                    <label htmlFor="name">Collection Symbol</label>
+                                    <input type="text" className="ml-3 bg-gray-400 rounded-md" maxLength={7} placeholder="MCN" name="name" id="" />
+                                </div>
                             </div>
+                            <label htmlFor="image">Collection Logo Image</label>
+                            <div onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} className="fileInputContainer self-center">
+                                <div className="fileLabel">
+                                    <h2>Upload File</h2>
+                                    <BsFillCloudUploadFill className="upload__icon" />
+                                    <p>Arraste e solte ou clique para selecionar</p>
+                                </div>
+                                <input type="file" id="fileId" className="hidden" onChange={handleFileSelect} />
+                                <button
+                                    type="button"
+                                    onClick={() => document.getElementById("fileId")?.click()}
+                                    className="fileButton bg-gray-600 rounded p-2 mt-2"
+                                >
+                                    Selecionar arquivo
+                                </button>
+                            </div>
+                            {previewImage && (
+                                <div className="preview">
+                                    <img src={previewImage} alt="Preview" className="w-24 h-24 mt-3 rounded" />
+                                    <p className="text-sm mt-1">Arquivo selecionado: {selectedImage?.name}</p>
+                                </div>
+                            )}
                             <div>
                                 <label htmlFor="description">Collection Description</label>
-                                <input type="text" className="ml-3 bg-gray-400 rounded-md" name="description" id="" />
-                            </div>
+                                <textarea
+                                    className="ml-3 bg-gray-400 h-[100px] w-full rounded-md resize-none p-2"
+                                    name="description"
+                                    placeholder="Digite a descrição da coleção"
+                                    maxLength={500}
+                                />                            </div>
                             <div>
-                               <TagInput onTagsChange={setTags} />
-                               </div>
+                                <TagInput onTagsChange={setTags} />
+                            </div>
                             <div>
                                 <label htmlFor="category">Collection Category</label>
-                                <input type="text" className="ml-3 bg-gray-400 rounded-md" name="category" id="" />
-                            </div>
-                            <div>
-                                <label htmlFor="image">Collection Image</label>
-                                <input type="file" className="ml-3 bg-gray-400 rounded-md" name="image" id="" />
-                            </div>
-
-                            <div>
-                                <label htmlFor="blockchain">Blockchain</label>
-                                <select className="ml-3 bg-gray-400 rounded-md" name="blockchain" id="blockchain">
-                                    <option value="ethereum">
-                                            Ethereum
-                                    </option>
+                                <select className="bg-slate-400 rounded-lg ml-3" name="category">
+                                    <option value="art">Art</option>
+                                    <option value="music">Music</option>
+                                    <option value="photography">Photography</option>
+                                    <option value="pfp">PFP</option>
                                 </select>
+                            </div>
+                            <div>
+                                <button className=" border-dotted border bg-gray-700 bg-opacity-60 rounded-lg p-2" type="button">
+                                    <div className="flex gap-2 items-center">
+                                        <FaEthereum className="text-purple-900 text-lg" />
+                                        <h1>Ethereum</h1>
+                                    </div>
+                                    <p>Estimated cost of contract deploy: </p>
+                                    <p className=" text-mainColor">U$ 8,99</p>
+                                </button>
                             </div>
                             <button type="submit" className="px-8 py-2 rounded-xl bg-mainColor">Create</button>
                         </form>

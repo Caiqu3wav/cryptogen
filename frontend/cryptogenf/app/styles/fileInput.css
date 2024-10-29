@@ -1,0 +1,33 @@
+.fileInputContainer {
+  border: 4px dashed rgb(54, 151, 224);
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px 20px;
+  width: 150px;
+}
+
+.fileLabel {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .fileLabel h2 {
+    color: rgb(54, 151, 224);
+  }
+  
+  .upload__icon {
+    font-size: 30px;
+    color: rgb(54, 151, 224);
+  }
+  
+  .fileLabel p {
+    font-size: 14px;
+    color: rgb(10, 52, 85);
+  }
+  
+  #fileId {
+    display: none;
+  }

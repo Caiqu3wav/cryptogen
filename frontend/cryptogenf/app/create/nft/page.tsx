@@ -1,54 +1,34 @@
 'use client'
-import Header from "@/app/components/sections/Header";
+import Header from "@/app/components/sections/Header"
+import Link from 'next/link';
+import { FaPaintBrush } from "react-icons/fa";
+import { FaPhotoVideo } from "react-icons/fa";
+import { MdLibraryMusic } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
 
 export default function CreateNFTItem() {
-
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        // Handle form submission here
-    }
-
+   
     return (
         <>
             <Header />
-            <div className='flex items-center h-screen bg-gradient-to-b hero-sec min-h-[600px]'>
+            <div className='flex items-center justify-center h-screen bg-gradient-to-b hero-sec min-h-[600px]'>
                 <div className='h-screen text-white'>
                     <div>
                         <h1 className='text-3xl'>Create a new NFT item</h1>
                     </div>
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                        <div>
-                            <label htmlFor="name">NFT Name</label>
-                            <input type="text" className="ml-3 bg-gray-400 rounded-md" name="name" id="name" />
+                    <div className="mt-3">
+                        <h1 className="text-mainColor">Choose your NFT&apos;s category:</h1>
+                        <div className="flex flex-col gap-4">
+                            <Link href={'/nft/art'} className='bg-gray-500 text-black px-20 py-2 rounded-xl hover:bg-black
+                   hover:text-gray-400 flex items-center justify-center gap-2'><FaPaintBrush/> Art</Link>
+                            <Link href={'/nft/music'} className='bg-gray-500 text-black px-20 py-2 rounded-xl hover:bg-black
+                   hover:text-gray-400 flex items-center justify-center gap-2'><FaPhotoVideo/> Music</Link>
+                            <Link href={'/nft/pfp'} className='bg-gray-500 text-black px-20 py-2 rounded-xl hover:bg-black
+                   hover:text-gray-400 flex items-center justify-center gap-2'><MdLibraryMusic/> PFP</Link>
+                            <Link href={'/nft/photography'} className='bg-gray-500 text-black px-20 py-2 rounded-xl hover:bg-black
+                   hover:text-gray-400 flex items-center justify-center gap-2'><CgProfile/> Photography</Link>
                         </div>
-                        <div>
-                            <label htmlFor="description">NFT Description</label>
-                            <input type="text" className="ml-3 bg-gray-400 rounded-md" name="description" id="description" />
-                        </div>
-                        <div>
-                            <label htmlFor="category">NFT Category</label>
-                            <input type="text" className="ml-3 bg-gray-400 rounded-md" name="category" id="category" />
-                        </div>
-                        <div>
-                            <label htmlFor="image">NFT Image</label>
-                            <input type="file" className="ml-3 bg-gray-400 rounded-md" name="image" id="image" />
-                        </div>
-                        <div>
-                            <label htmlFor="price">Price</label>
-                            <input type="number" className="ml-3 bg-gray-400 rounded-md" name="price" id="price" placeholder="Price in ETH" />
-                        </div>
-                        <div>
-                            <label htmlFor="supply">Supply</label>
-                            <input type="number" className="ml-3 bg-gray-400 rounded-md" name="supply" id="supply" placeholder="Total supply" />
-                        </div>
-                        <div>
-                            <label htmlFor="blockchain">Blockchain</label>
-                            <select className="ml-3 bg-gray-400 rounded-md" name="blockchain" id="blockchain">
-                                <option value="ethereum">Ethereum</option>
-                            </select>
-                        </div>
-                        <button type="submit" className="px-8 py-2 rounded-xl bg-mainColor">Create NFT</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </>
