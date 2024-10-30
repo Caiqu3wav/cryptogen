@@ -99,7 +99,7 @@ export default function Collection() {
     return (
         <>
             <Header />
-            <div className='flex items-center justify-center h-screen bg-gradient-to-b hero-sec min-h-[600px]'>
+            <div className='flex items-center justify-center h-screen bg-gradient-to-b hero-sec min-h-[600px] py-4'>
                 {isLoading ? (
                     <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
                 ) : isError ? (

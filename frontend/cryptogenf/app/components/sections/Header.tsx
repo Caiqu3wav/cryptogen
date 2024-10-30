@@ -46,7 +46,7 @@ const {data: session} = useSession();
             <CgProfile size={60} className='text-white'/>
           )}
         </button>
-        <Link href={'/create'} className='w-[100px] flex items-center justify-around h-8
+        <Link href={'/create'} className='w-[100px] flex items-center justify-center gap-2 h-8
       rounded-lg bg-gradient-to-br from-purple-600 to-black text-white'>
               <FaRegSquarePlus size={20}/>
         <p>Create</p>
