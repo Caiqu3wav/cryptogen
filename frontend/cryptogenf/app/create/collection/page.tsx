@@ -8,6 +8,19 @@ import { BsFillCloudUploadFill } from "react-icons/bs"
 import "../../styles/fileInput.css"
 import { FaEthereum } from "react-icons/fa";
 
+type BlockchainType = {
+    name: string;
+    index: number;
+}
+
+const blockchainsOptions = [
+    {
+        name: "Ethereum",
+        image: '',
+        deployCost: 8.99,
+    }
+]
+
 export default function Collection() {
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +28,11 @@ export default function Collection() {
     const [tags, setTags] = useState<string[]>([]);
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
+    const [blockchainSelected, setBlockchainSelected] = useState(false);
+    const [blockchain, setBlockchain] = useState<BlockchainType>({
+        name: '',
+        index: 0
+    })
 
     const handleImageChange = (file: File | null) => {
         setSelectedImage(file);
@@ -77,7 +95,7 @@ export default function Collection() {
                     tags: tags,
                     category: e.target.category.value,
                     imageUrl: imageUrl,
-                    blockchain: e.target.blockchain.value
+                    blockchain: blockchain.name
                 })
             });
 
@@ -113,7 +131,7 @@ export default function Collection() {
                         <div>
                             <h1 className='text-3xl'>Create a new collection</h1>
                         </div>
-                        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-3 py-4">
                             <div className="flex gap-2">
                                 <div>
                                     <label htmlFor="name">Collection Name</label>
@@ -167,14 +185,22 @@ export default function Collection() {
                                 </select>
                             </div>
                             <div>
-                                <button className=" border-dotted border bg-gray-700 bg-opacity-60 rounded-lg p-2" type="button">
-                                    <div className="flex gap-2 items-center">
+                                    {blockchainsOptions.map((blockchain) => (
+                                <button key={blockchain} onClick={() => setBlockchain({
+                                    name: blockchain.name,
+                                    index: blockchainsOptions[blockchain]
+                                }
+                                    
+                                )} className={`${blockchainSelected ? 'border-none' : 'border-dotted'} bg-gray-700 bg-opacity-60 rounded-lg p-2`} type="button">
+                                <div className="flex gap-4 items-center">
                                         <FaEthereum className="text-purple-900 text-lg" />
                                         <h1>Ethereum</h1>
                                     </div>
+                                    <p className=" text-gray-700 text-opacity-70">Most popular blockchain</p>
                                     <p>Estimated cost of contract deploy: </p>
                                     <p className=" text-mainColor">U$ 8,99</p>
                                 </button>
+                                    )) } 
                             </div>
                             <button type="submit" className="px-8 py-2 rounded-xl bg-mainColor">Create</button>
                         </form>

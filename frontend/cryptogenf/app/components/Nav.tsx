@@ -65,11 +65,11 @@ export default function Nav() {
     <nav className='flex flex-col gap-2 items-center'>
       <SearchInput/>
       <ul className='flex gap-6 items-center text-rose-300 majorfour2:hidden'>
-        <li>Explore</li>
-        <li>About</li>
-        <li>MarketPlace</li>
-        <li>Collections</li>
-        <li>Artists</li>
+        <li><Link href={'/marketplace'}>Explore</Link></li>
+        <li><Link href={'/about'}>About</Link></li>
+        <li><Link href={'/marketplace'}>MarketPlace</Link></li>
+        <li><Link href={'/collections'}>Collections</Link></li>
+        <li><Link href={'/artists'}>Artists</Link></li>
       </ul>
       <button aria-label="Open Menu" onClick={toggleMenu} className="btn-hamburguer hidden majorfour2:flex">
           <GiHamburgerMenu size={45} className="text-white" />
