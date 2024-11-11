@@ -9,7 +9,7 @@ import (
 type User struct {
 	Id           uuid.UUID `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	Name         string    `json:"name" gorm:"type:varchar(50);unique;"`
-	Email        string    `json:"email" gorm:"type:varchar(100);not null"`
+	Email        string    `json:"email" gorm:"type:varchar(100);unique;not null"`
 	Password     string    `json:"password" gorm:"type:varchar(60);"`
 	ProfileImage string    `json:"profile_image" gorm:"type:varchar(255)"`
 	Bio          string    `json:"bio" gorm:"type:text"`

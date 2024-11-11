@@ -22,17 +22,17 @@ export const authOptions: AuthOptions = {
             });
 
             const user = {
-              id: response.data.user.Id,
-              name: response.data.user.Name,
-              email: response.data.user.Email,
-              profileImage: response.data.user.ProfileImage,
+              id: response.data.user?.id,
+              name: response.data.user?.name,
+              email: response.data.user?.email,
+              profileImage: response.data.user?.profile_image,
             };
               
-            if (response.data && user) {
-              console.log(user);
+            if (!user.id || !user.name || !user.email) {
+              throw new Error('Dados do usuário incompletos');
+          }
+
                 return user;
-            }
-                return null;
           } catch (error) {
             console.error('Failed to authorize', error);
             throw new Error('Credenciais inválidas');
