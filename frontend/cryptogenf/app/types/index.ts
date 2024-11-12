@@ -21,3 +21,18 @@ export interface userApiDataI {
     Email: string;
     ProfileImage: string;
 }
+
+export interface OwnerI {
+    id:   number,
+    name: string,
+}
+
+export interface CollectionI {
+    id: string,
+    name: string,
+    description: string,
+    imageUrl: string,
+    tags: string[],
+    owner: OwnerI,
+    nfts: nftProps[],
+}
