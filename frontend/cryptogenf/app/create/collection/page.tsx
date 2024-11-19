@@ -9,15 +9,17 @@ import "../../styles/fileInput.css"
 import { FaEthereum } from "react-icons/fa";
 
 type BlockchainType = {
+    id: number;
     name: string;
-    index: number;
 }
 
 const blockchainsOptions = [
     {
+        id: 1,
         name: "Ethereum",
         image: '',
         deployCost: 8.99,
+        description: "Most popular blockchain"
     }
 ]
 
@@ -28,11 +30,7 @@ export default function Collection() {
     const [tags, setTags] = useState<string[]>([]);
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
-    const [blockchainSelected, setBlockchainSelected] = useState(false);
-    const [blockchain, setBlockchain] = useState<BlockchainType>({
-        name: '',
-        index: 0
-    })
+    const [blockchainSelected, setBlockchainSelected] = useState<BlockchainType | null>(null);
 
     const handleImageChange = (file: File | null) => {
         setSelectedImage(file);
@@ -57,8 +55,15 @@ export default function Collection() {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        if (!e.target.name.value || !e.target.description.value || tags.length === 0) {
-            alert("Por favor, preencha todos os campos obrigatórios.");
+        if (
+            !e.target.name.value.trim() || 
+            !e.target.description.value.trim() || 
+            tags.length === 0 || 
+            !e.target.category.value || 
+            !blockchainSelected || 
+            !e.target.image.files[0]
+        ) {
+            alert("Please fill in all required fields.");
             setIsLoading(false);
             return;
         }
@@ -95,7 +100,7 @@ export default function Collection() {
                     tags: tags,
                     category: e.target.category.value,
                     imageUrl: imageUrl,
-                    blockchain: blockchain.name
+                    blockchain: blockchainSelected?.name
                 })
             });
 
@@ -113,6 +118,14 @@ export default function Collection() {
             setIsLoading(false);
         }
     }
+
+    const handleBlockchainChange = (blockchain: BlockchainType) => {
+        if (blockchainSelected?.id === blockchain.id) {
+            setBlockchainSelected(null);
+            return;
+        }
+        setBlockchainSelected(blockchain);
+    };
 
     return (
         <>
@@ -139,7 +152,10 @@ export default function Collection() {
                                 </div>
                                 <div>
                                     <label htmlFor="name">Collection Symbol</label>
-                                    <input type="text" className="ml-3 bg-gray-400 rounded-md" maxLength={7} placeholder="MCN" name="name" id="" />
+                                    <input type="text" className="ml-3 bg-gray-400 rounded-md" onInput={(e) => {
+                                        const input = e.target as HTMLInputElement;
+                                        input.value = input.value.toUpperCase();
+                                    }} maxLength={3} placeholder="MCN" name="symbol" id="" />
                                 </div>
                             </div>
                             <label htmlFor="image">Collection Logo Image</label>
@@ -185,22 +201,18 @@ export default function Collection() {
                                 </select>
                             </div>
                             <div>
-                                    {blockchainsOptions.map((blockchain) => (
-                                <button key={blockchain} onClick={() => setBlockchain({
-                                    name: blockchain.name,
-                                    index: blockchainsOptions[blockchain]
-                                }
-                                    
-                                )} className={`${blockchainSelected ? 'border-none' : 'border-dotted'} bg-gray-700 bg-opacity-60 rounded-lg p-2`} type="button">
-                                <div className="flex gap-4 items-center">
-                                        <FaEthereum className="text-purple-900 text-lg" />
-                                        <h1>Ethereum</h1>
-                                    </div>
-                                    <p className=" text-gray-700 text-opacity-70">Most popular blockchain</p>
-                                    <p>Estimated cost of contract deploy: </p>
-                                    <p className=" text-mainColor">U$ 8,99</p>
-                                </button>
-                                    )) } 
+                                {blockchainsOptions.map((blockchain) => (
+                                    <button className={`${blockchainSelected?.name !== blockchain.name ? 'border-none' : 'border-dotted border-white border-2'} bg-gray-700 bg-opacity-60 rounded-lg p-2`} type="button" key={blockchain.id}
+                                        onClick={() => handleBlockchainChange(blockchain)}>
+                                        <div className="flex gap-4 items-center">
+                                            <FaEthereum className="text-purple-900 text-lg" />
+                                            <h1>{blockchain.name}</h1>
+                                        </div>
+                                        <p className=" text-gray-700 text-opacity-70">{blockchain.description}</p>
+                                        <p>Estimated cost of contract deploy: </p>
+                                        <p className=" text-mainColor">${blockchain.deployCost.toFixed(2)}</p>
+                                    </button>
+                                ))}
                             </div>
                             <button type="submit" className="px-8 py-2 rounded-xl bg-mainColor">Create</button>
                         </form>

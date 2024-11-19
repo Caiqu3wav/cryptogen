@@ -54,10 +54,6 @@ export default function Nav() {
       title: 'Collections',
       path: '/collections',
     },
-    {
-      title: 'Artists',
-      path: '/artists',
-    },
   ];
 
   return (     

@@ -17,6 +17,7 @@ type CollectionCredentials struct {
 	Tags []string `json:"tags"`
 	OwnerId uuid.UUID `json:"ownerId"`
 	Blockchain string `json:"blockchain"`
+	Category string  `json:"category"`
 }
 
 func CreateCollection(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +45,7 @@ func CreateCollection(w http.ResponseWriter, r *http.Request) {
 		Owner: owner,
 		OwnerId: owner.Id, 
 		Blockchain: creds.Blockchain,
+		Category: creds.Category,
 	}
 
 	if err := database.DB.Create(&collection).Error; err != nil {

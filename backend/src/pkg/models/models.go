@@ -21,8 +21,10 @@ type Collection struct {
 	Id          uuid.UUID      `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	Name        string         `json:"name" gorm:"type:varchar(100);not null"`
 	Description string         `json:"description" gorm:"type:text"`
+	Symbol      string         `json:"symbol" gorm:"type:varchar(7)"`
 	ImageUrl    string         `json:"image_url" gorm:"type:varchar(255)"`
 	Tags        pq.StringArray `json:"tags" gorm:"type:text[]"`
+	Category    string         `json:"category" gorm:"type:varchar(50)"`
 	Owner     User           `json:"owner" gorm:"foreignKey:OwnerId;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Blockchain  string         `json:"blockchain" gorm:"type:varchar(50)"`
 	OwnerId   uuid.UUID      `json:"owner_id" gorm:"type:uuid;not null"`
@@ -57,6 +59,7 @@ type Drop struct {
     Name         string     `json:"name" gorm:"type:varchar(100);not null"`
 	Owner        User       `json:"owner" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	OwnerId      uuid.UUID  `json:"owner_id" gorm:"type:uuid;not null"` 
+	Category     string     `json:"category" gorm:"type:varchar(50)"`
     Description  string     `json:"description" gorm:"type:text"`
     ImageURL     string     `json:"image_url" gorm:"type:varchar(255)"`
     CollectionId uuid.UUID  `json:"collection_id" gorm:"type:uuid;not null"` 
