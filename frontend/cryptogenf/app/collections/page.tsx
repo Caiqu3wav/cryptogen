@@ -20,6 +20,7 @@ useEffect(() => {
             if (res.ok) {
                 const collectionsData: CollectionI[] = await res.json();
                 setCollections(collectionsData);
+                console.log(collections);
             } else {
                 console.log("Erro ao buscar coleções", res.status);
             }
@@ -28,7 +29,7 @@ useEffect(() => {
         }
     }
     getCollection();
-})
+}, [])
 
     return (
         <>

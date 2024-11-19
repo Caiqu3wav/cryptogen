@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import cyberGenLogo from '@/public/assets/logo.png'
 import Image from 'next/image'
 import Nav from '../Nav'
@@ -13,12 +13,6 @@ import { FaRegSquarePlus } from "react-icons/fa6";
 export default function Header() {
 const {data: session} = useSession();
   const [profileModalOpen, setProfileModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (session) {
-      console.log(session.user.profileImage);
-    }
-  }, [session]);
 
   return (
     <header className='flex fixed top-0 z-50 justify-between items-center

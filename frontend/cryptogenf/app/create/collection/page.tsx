@@ -61,7 +61,7 @@ export default function Collection() {
             tags.length === 0 || 
             !e.target.category.value || 
             !blockchainSelected || 
-            !e.target.image.files[0]
+            !selectedImage
         ) {
             alert("Please fill in all required fields.");
             setIsLoading(false);
@@ -71,10 +71,8 @@ export default function Collection() {
         setIsLoading(true);
 
         try {
-
-            const imageFile = e.target.image.files[0];
             const formData = new FormData();
-            formData.append('file', imageFile);
+            formData.append('file', selectedImage);
 
             const uploadRes = await fetch('/api/upload', {
                 method: 'POST',
@@ -139,7 +137,6 @@ export default function Collection() {
                         <MdError size={50} className="text-red-600" />
                     </div>
                 ) : (
-
                     <div className='h-screen mt-5 text-white'>
                         <div>
                             <h1 className='text-3xl'>Create a new collection</h1>
@@ -217,8 +214,7 @@ export default function Collection() {
                             <button type="submit" className="px-8 py-2 rounded-xl bg-mainColor">Create</button>
                         </form>
                     </div>
-                )
-                }
+                )}
             </div>
         </>
     )
