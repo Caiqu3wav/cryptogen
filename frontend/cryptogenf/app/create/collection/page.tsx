@@ -3,6 +3,7 @@ import Header from "@/app/components/sections/Header"
 import { useSession } from "next-auth/react"
 import { useState } from 'react'
 import { MdError } from "react-icons/md"
+import { FcOk } from "react-icons/fc";
 import TagInput from "@/app/components/TagInput"
 import { BsFillCloudUploadFill } from "react-icons/bs"
 import "../../styles/fileInput.css"
@@ -25,6 +26,7 @@ const blockchainsOptions = [
 
 export default function Collection() {
     const [isError, setIsError] = useState(false);
+    const [sucessMessage, setSucessMessage] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const { data: session } = useSession();
     const [tags, setTags] = useState<string[]>([]);
@@ -106,8 +108,7 @@ export default function Collection() {
                 throw new Error('Failed to create collection');
             }
 
-            const data = await res.json();
-            console.log(data);
+            setSucessMessage(true);
             setIsLoading(false);
         } catch (error) {
             setIsError(true);
@@ -133,8 +134,13 @@ export default function Collection() {
                     <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
                 ) : isError ? (
                     <div className="flex flex-col items-center gap-3">
-                        <p>Erro ao criar coleção</p>
+                        <p className="text-white">Erro ao criar coleção</p>
                         <MdError size={50} className="text-red-600" />
+                    </div>
+                ) : sucessMessage ? (
+                    <div className="flex flex-col items-center gap-3">
+                        <p className="text-white">Collection created with sucess!</p>
+                        <FcOk size={50} className="text-green-600" />
                     </div>
                 ) : (
                     <div className='h-screen mt-5 text-white'>
