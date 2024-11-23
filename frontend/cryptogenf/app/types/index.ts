@@ -1,11 +1,32 @@
-export interface nftProps {
+export interface NftProps {
     id: string;
     name: string;
     description: string;
-    Images: string[];
+    imageUrl: string;
     price: number;
-    owner: string;
-    forSale: boolean;
+    tags: string[];
+    category: string;
+    owner: OwnerI; 
+    collection: CollectionI; 
+    floorPrice: number;
+    volume: number; 
+    lastSale: number; 
+    totalSales: number;
+    trends: TrendI;
+    createdAt: string; 
+    updatedAt: string; 
+    forSale?: boolean; 
+}
+
+export interface OwnerI {
+    id: string;
+    name: string;
+    profilePic?: string; 
+}
+
+export interface TrendI {
+    prices: number[];
+    dates: string[]; 
 }
 
 export interface userDataI {
@@ -23,7 +44,7 @@ export interface userApiDataI {
 }
 
 export interface OwnerI {
-    id:   number,
+    id:   string,
     name: string,
 }
 
@@ -34,15 +55,4 @@ export interface CollectionI {
     imageUrl: string,
     tags: string[],
     owner: OwnerI,
-    nfts: nftProps[],
-}
-
-export interface NftI {
-    id: string,
-    name: string,
-    description: string,
-    imageUrl: string,
-    tags: string[],
-    owner: OwnerI,
-    price: number,
-}
+    nfts?: NftProps[];}
