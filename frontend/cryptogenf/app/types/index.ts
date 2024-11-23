@@ -36,3 +36,13 @@ export interface CollectionI {
     owner: OwnerI,
     nfts: nftProps[],
 }
+
+export interface NftI {
+    id: string,
+    name: string,
+    description: string,
+    imageUrl: string,
+    tags: string[],
+    owner: OwnerI,
+    price: number,
+}

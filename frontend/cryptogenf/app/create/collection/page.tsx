@@ -26,7 +26,7 @@ const blockchainsOptions = [
 
 export default function Collection() {
     const [isError, setIsError] = useState(false);
-    const [sucessMessage, setSucessMessage] = useState(true);
+    const [sucessMessage, setSucessMessage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { data: session } = useSession();
     const [tags, setTags] = useState<string[]>([]);

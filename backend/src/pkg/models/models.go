@@ -46,6 +46,12 @@ type NFT struct {
 	Category     string         `json:"category" gorm:"type:varchar(50)"`
 	Attributes   string    `json:"attributes" gorm:"type:jsonb;default:'{}'"`
 	Price        float64        `json:"price" gorm:"type:decimal(10,2)"`
+	    // Métricas e Estatísticas
+	FloorPrice   float64        `json:"floor_price" gorm:"type:decimal(10,2)"`
+    Volume       float64        `json:"volume" gorm:"type:decimal(15,2)"`
+    LastSale     float64        `json:"last_sale" gorm:"type:decimal(10,2)"`
+    TotalSales   int            `json:"total_sales" gorm:"type:int"` 
+    Trends       string         `json:"trends" gorm:"type:jsonb;default:'{}'"` 
 	DropId       uuid.UUID      `json:"drop_id" gorm:"type:uuid"`
 	Drop         Drop           `json:"drop" gorm:"foreignKey:DropId"`
 	CreatedAt    time.Time      `json:"created_at" gorm:"autoCreateTime"`

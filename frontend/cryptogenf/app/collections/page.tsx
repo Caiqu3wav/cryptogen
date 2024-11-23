@@ -29,7 +29,7 @@ useEffect(() => {
         }
     }
     getCollection();
-}, [])
+}, [collections])
 
     return (
         <>
