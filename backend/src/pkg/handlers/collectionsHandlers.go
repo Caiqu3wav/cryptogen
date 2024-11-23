@@ -42,7 +42,6 @@ func CreateCollection(w http.ResponseWriter, r *http.Request) {
 		Description: creds.Description,
 		ImageUrl: creds.ImageUrl,
 		Tags: creds.Tags,
-		Owner: owner,
 		OwnerId: owner.Id, 
 		Blockchain: creds.Blockchain,
 		Category: creds.Category,
@@ -124,4 +123,16 @@ func DeleteCollection(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func GetUserCollections(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var collections []models.Collection
+
+	if err := database.DB.Find(&collections, "owner_id = ?", mux.Vars(r)["id"]).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(collections)
 }

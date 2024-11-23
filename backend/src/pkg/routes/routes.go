@@ -36,6 +36,8 @@ func RegisterRoutes(r *mux.Router) {
 
 	r.HandleFunc("/collection/{id}", handlers.GetCollection).Methods("GET").Name("getCollection")
 
+	r.HandleFunc("/userCollections/{id}", handlers.GetUserCollections).Methods("GET").Name("getUserCollections")
+
 	r.HandleFunc("/collections", handlers.GetCollections).Methods("GET").Name("getCollections")
 
 	r.HandleFunc("/collection/{id}", handlers.UpdateCollection).Methods("PUT").Name("updateCollection")

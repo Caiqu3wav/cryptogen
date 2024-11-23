@@ -32,7 +32,7 @@ export default function ProfileModal({isOpen, setIsOpen}: ModalProps) {
       >
     <div className='absolute top-20 right-6 gap-6 bg-white text-black p-4 rounded-lg shadow-lg'>
       <div className='flex flex-col gap-2'>
-      <Link href={`profile/${session?.user.id}`} className='flex items-center'><CgProfile size={20}/> <strong className='ml-2'>Profile</strong></Link>
+      <Link href={`/profile/${session?.user.id}`} className='flex items-center'><CgProfile size={20}/> <strong className='ml-2'>Profile</strong></Link>
               <hr />
       <Link href="" className='flex items-center'><BsWatch size={20}/> <strong className='ml-2'>WatchList</strong></Link>
       <hr />
@@ -42,7 +42,7 @@ export default function ProfileModal({isOpen, setIsOpen}: ModalProps) {
       <hr />
       <Link href="" className='flex items-center'><IoSettings size={20}/> <strong className='ml-2'>Settings</strong></Link>
       </div>
-                <button onClick={() => signOut()} className='mt-4 flex items-center gap-2 text-red-500'>Sign Out <LiaSignOutAltSolid/></button>
+            <button onClick={() => signOut()} className='mt-4 flex items-center gap-2 text-red-500'>Sign Out <LiaSignOutAltSolid/></button>
     </div>
     </div>
     )}
