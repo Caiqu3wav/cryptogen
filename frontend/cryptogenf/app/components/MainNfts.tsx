@@ -6,10 +6,8 @@ export default function MainNfts() {
 
   return (
     <div className='bg-gradient-to-b from-black to-mainColor flex items-center w-full justify-center min-h-[650px] pb-3'>
-      <div className='bg-gray-500 rounded-lg w-[80%] majorfour1:w-[90%] px-3 py-3 min-h-[500px]'>
-            <div className='grid grid-cols-3 gap-3 place-items-center'>
+      <div className='bg-gray-500 rounded-lg w-[90%] majorfour1:w-[97%] px-3 py-3 min-h-[500px]'>
                 <NftCard/>
-            </div>
       </div>
     </div>
   )
