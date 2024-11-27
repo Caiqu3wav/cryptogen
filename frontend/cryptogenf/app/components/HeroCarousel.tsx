@@ -1,7 +1,7 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
 import React, {useEffect, useState} from 'react'
-// import { nfts } from '../api/nfts'
+ import { nfts as nftsVar } from '../api/nfts'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
@@ -11,7 +11,10 @@ import '../styles/caroulsel.css'
 import { NftProps } from '../types'
 
 export default function HeroCarousel() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [nfts, setNfts] = useState<NftProps[] | null>(null);
+  const [spaceBetween, setSpaceBetween] = useState(30);
+  const [slidesPerView, setSlidesPerView] = useState(3);
 
   useEffect(() => {
       const getNfts = async () => {
@@ -28,8 +31,29 @@ export default function HeroCarousel() {
           }
       }
       getNfts();
-  }, [nfts])
-  
+  }, []);
+
+
+  useEffect(() => {
+    const updateCarouselConfig = () => {
+      const width = window.innerWidth;
+      if (width < 554) {
+        setSpaceBetween(20);
+        setSlidesPerView(2); // Apenas 1 slide visível em telas menores
+      } else if (width < 768) {
+        setSpaceBetween(30);
+        setSlidesPerView(3); // 2 slides visíveis para telas médias
+      } else {
+        setSpaceBetween(30);
+        setSlidesPerView(3); // 3 slides visíveis para telas grandes
+      }
+    };
+
+    updateCarouselConfig();
+
+    window.addEventListener('resize', updateCarouselConfig);
+    return () => window.removeEventListener('resize', updateCarouselConfig);
+  }, []);
 
   return (
     <div className="flex w-full h-fit min-h-52 items-center justify-center">
@@ -39,18 +63,17 @@ export default function HeroCarousel() {
           disableOnInteraction: false
         }}
         centeredSlides={true}
-        slidesPerView={3}
-        spaceBetween={20}
+        slidesPerView={slidesPerView}
+        spaceBetween={spaceBetween}
         navigation
         pagination={{ clickable: true, bulletClass: 'swiper-pagination-bullet' }} className='flex w-full h-full'>
-                          {nfts?.map((nft) => (
-                              /* use for when fetchin data from backend
-            <SwiperSlide className="min-h-fit py-8" key={nft.id}>
-            <div className="flex flex-col items-center gap-4 justify-center h-fit text-white bg-gray-800 p-4 rounded-lg shadow-md">
+                          {nftsVar?.map((nft) => (
+<SwiperSlide className="min-h-fit py-8" key={nft.id}>
+            <div className="flex flex-col items-center gap-4 majorthree1:gap-2 justify-center h-fit text-white bg-gray-800 p-4 majortwo1-2:p-1 midtw:w-[180px] rounded-lg shadow-md">
                 <img 
-                    src={nft.image} 
-                    alt={nft.name} 
-                    className="w-[200px] h-[200px] object-cover rounded-lg border border-gray-700"
+                    src={nft.image}
+                    alt={nft.name}
+                    className="w-[200px] h-[200px] majortwo4:w-[150px] majortwo4:h-[150px] majorfour:w-[90%] majorfour:h-[170px] object-cover rounded-lg border border-gray-700"
                 />
 
                 <h3 className="text-lg font-semibold">{nft.name}</h3>
@@ -70,10 +93,8 @@ export default function HeroCarousel() {
                 </div>
             </div>
         </SwiperSlide>
-                            
-  */
 
-        <SwiperSlide className="min-h-fit py-8" key={nft.id}>
+        /*<SwiperSlide className="min-h-fit py-8" key={nft.id}>
          <a 
         href={`/nft/${nft.id}`} 
         className="flex flex-col items-center gap-4 justify-center h-fit text-white bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105"
@@ -93,7 +114,6 @@ export default function HeroCarousel() {
             <p className="text-xl font-bold text-mainColor">${nft.price}</p>
         </div>
 
-        {/* Métricas Detalhadas */}
         <div className="flex flex-col gap-2 mt-3 w-full">
             <div className="flex justify-between w-full">
                 <p className="text-xs text-gray-500">Volume</p>
@@ -130,6 +150,7 @@ export default function HeroCarousel() {
         )}
     </a>
     </SwiperSlide>
+        */
                             ))}
           </Swiper>
     </div>
