@@ -18,7 +18,7 @@ const {data: session} = useSession();
     <header className='flex fixed top-0 z-50 justify-between items-center
      bg-gradient-to-b from-blue-300 to-transparent h-32 px-3 w-full'>
       <Link href="/" className='flex items-center border-solid border-r-2 rounded-3xl border-white pr-6 h-full'>
-      <Image src={cyberGenLogo} className="w-20 rounded-full"  alt="logo" />
+      <Image src={cyberGenLogo} className="w-20 midtwo2:w-14 rounded-full"  alt="logo" />
       </Link>
       <Nav/>
       <div className='w-fit'>
@@ -35,14 +35,14 @@ const {data: session} = useSession();
         <p className='mr-6 text-white'>{session.user?.name}</p>
         <button onClick={() => setProfileModalOpen(!profileModalOpen)} className='mr-6'>
           {session.user?.profileImage ? (
-            <img src={session.user.profileImage} alt='profile pic' className='rounded-full w-[60px]'/>
+            <img src={session.user.profileImage} alt='profile pic' className='rounded-full w-[60px] midfour:w-[45px]'/>
           ) : (
             <CgProfile size={60} className='text-white'/>
           )}
         </button>
-        <Link href={'/create'} className='w-[100px] flex items-center justify-center gap-2 h-8
+        <Link href={'/create'} className='w-[100px] midfour:w-[70px] midfour:text-sm flex items-center justify-center gap-2 h-8
       rounded-lg bg-gradient-to-br from-purple-600 to-black text-white'>
-              <FaRegSquarePlus size={20}/>
+              <FaRegSquarePlus/>
         <p>Create</p>
       </Link>
       {profileModalOpen && <ProfileModal isOpen={profileModalOpen} setIsOpen={setProfileModalOpen}/>}

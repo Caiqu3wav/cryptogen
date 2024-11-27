@@ -11,7 +11,6 @@ import '../styles/caroulsel.css'
 import { NftProps } from '../types'
 
 export default function HeroCarousel() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [nfts, setNfts] = useState<NftProps[] | null>(null);
   const [spaceBetween, setSpaceBetween] = useState(30);
   const [slidesPerView, setSlidesPerView] = useState(3);
@@ -67,34 +66,38 @@ export default function HeroCarousel() {
         spaceBetween={spaceBetween}
         navigation
         pagination={{ clickable: true, bulletClass: 'swiper-pagination-bullet' }} className='flex w-full h-full'>
-                          {nftsVar?.map((nft) => (
-<SwiperSlide className="min-h-fit py-8" key={nft.id}>
-            <div className="flex flex-col items-center gap-4 majorthree1:gap-2 justify-center h-fit text-white bg-gray-800 p-4 majortwo1-2:p-1 midtw:w-[180px] rounded-lg shadow-md">
-                <img 
-                    src={nft.image}
-                    alt={nft.name}
-                    className="w-[200px] h-[200px] majortwo4:w-[150px] majortwo4:h-[150px] majorfour:w-[90%] majorfour:h-[170px] object-cover rounded-lg border border-gray-700"
-                />
-
-                <h3 className="text-lg font-semibold">{nft.name}</h3>
+            {!nfts ? (
+      nftsVar?.map((nft) => (
+        <SwiperSlide className="min-h-fit py-8" key={nft.id}>
+                    <div className="flex flex-col items-center gap-4 majorthree1:gap-2 justify-center h-fit text-white bg-gray-800 p-4 majortwo1-2:p-1 midtw:w-[180px] rounded-lg shadow-md">
+                        <img 
+                            src={nft.image}
+                            alt={nft.name}
+                            className="w-[200px] h-[200px] majortwo4:w-[150px] majortwo4:h-[150px] majorfour:w-[90%] majorfour:h-[170px] object-cover rounded-lg border border-gray-700"
+                        />
         
-                <p className="text-sm text-gray-400 text-center">{nft.description}</p>
-        
-                <div className="flex flex-col items-center">
-                    <p className="text-xs text-gray-500">Current Price</p>
-                    <p className="text-xl font-bold text-mainColor">${nft.price}</p>
-                </div>
-        
-                <div className="flex flex-col gap-2 mt-3 w-full">
-                    <div className="flex justify-between w-full">
-                        <p className="text-xs text-gray-500">Volume</p>
-                        <p className="text-sm text-gray-300">${nft.volume || 'N/A'}</p>
+                        <h3 className="text-lg font-semibold">{nft.name}</h3>
+                
+                        <p className="text-sm text-gray-400 text-center">{nft.description}</p>
+                
+                        <div className="flex flex-col items-center">
+                            <p className="text-xs text-gray-500">Current Price</p>
+                            <p className="text-xl font-bold text-mainColor">${nft.price}</p>
+                        </div>
+                
+                        <div className="flex flex-col gap-2 mt-3 w-full">
+                            <div className="flex justify-between w-full">
+                                <p className="text-xs text-gray-500">Volume</p>
+                                <p className="text-sm text-gray-300">${nft.volume || 'N/A'}</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </SwiperSlide>
+                </SwiperSlide>
+            ))
+            ) : (
+                nfts.map((nft) => (
 
-        /*<SwiperSlide className="min-h-fit py-8" key={nft.id}>
+<SwiperSlide className="min-h-fit py-8" key={nft.id}>
          <a 
         href={`/nft/${nft.id}`} 
         className="flex flex-col items-center gap-4 justify-center h-fit text-white bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105"
@@ -150,8 +153,7 @@ export default function HeroCarousel() {
         )}
     </a>
     </SwiperSlide>
-        */
-                            ))}
+            )))}
           </Swiper>
     </div>
   );
