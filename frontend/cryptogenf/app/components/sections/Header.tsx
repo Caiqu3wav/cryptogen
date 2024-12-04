@@ -8,7 +8,7 @@ import { IoAccessibility } from "react-icons/io5"
 import {useSession} from 'next-auth/react'
 import ProfileModal from '../ProfileModal'
 import { CgProfile } from "react-icons/cg"
-import { FaRegSquarePlus } from "react-icons/fa6";
+import { FaRegSquarePlus } from "react-icons/fa6"
 
 export default function Header() {
 const {data: session} = useSession();
@@ -40,7 +40,7 @@ const {data: session} = useSession();
             <CgProfile size={60} className='text-white'/>
           )}
         </button>
-        <Link href={'/create'} className='w-[100px] midfour:w-[70px] midfour:text-sm flex items-center justify-center gap-2 h-8
+        <Link href={'/create'} className='w-[100px] midfour:w-[70px] text-xl midfour:text-sm flex items-center justify-center gap-2 h-8
       rounded-lg bg-gradient-to-br from-purple-600 to-black text-white'>
               <FaRegSquarePlus/>
         <p>Create</p>

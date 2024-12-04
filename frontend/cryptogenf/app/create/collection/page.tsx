@@ -143,12 +143,12 @@ export default function Collection() {
                         <FcOk size={50} className="text-green-600" />
                     </div>
                 ) : (
-                    <div className='h-screen mt-5 text-white'>
+                    <div className='h-screen majorfour:px-3 mt-5 text-white'>
                         <div>
                             <h1 className='text-3xl'>Create a new collection</h1>
                         </div>
                         <form onSubmit={handleSubmit} className="flex flex-col gap-3 py-4">
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 midtwo3:flex-col">
                                 <div>
                                     <label htmlFor="name">Collection Name</label>
                                     <input type="text" className="ml-3 bg-gray-400 rounded-md" name="name" id="" />

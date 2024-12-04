@@ -127,12 +127,20 @@ func DeleteCollection(w http.ResponseWriter, r *http.Request) {
 
 func GetUserCollections(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var collections []models.Collection
+	id, ok := mux.Vars(r)["id"]
+    if !ok || id == "" {
+        http.Error(w, "ID do usuário é obrigatório", http.StatusBadRequest)
+        return
+    }
 
-	if err := database.DB.Find(&collections, "owner_id = ?", mux.Vars(r)["id"]).Error; err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+    if _, err := uuid.Parse(id); err != nil {
+        http.Error(w, "ID do usuário inválido", http.StatusBadRequest)
+        return
+    }
+
+    var collections []models.Collection
+    if err := database.DB.Find(&collections, "owner_id = ?", id).Error; err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
 	}
-
-	json.NewEncoder(w).Encode(collections)
 }
