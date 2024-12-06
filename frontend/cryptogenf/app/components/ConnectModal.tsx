@@ -1,7 +1,9 @@
-import { MdAssignment, MdOutlineMailLock } from "react-icons/md";
-import Link from "next/link";
+import { MdAssignment, MdOutlineMailLock } from "react-icons/md"
+import Link from "next/link"
+import { ethers } from 'ethers'
 
 export default function ConnectModal() {
+
 
   return (
     <div className="w-[50%] bg-white rounded-xl">
@@ -17,7 +19,7 @@ export default function ConnectModal() {
           <p className="pt-3 text-xs uppercase text-slate-500">Popular</p>
           <button className="w-full mt-3 flex items-center justify-center border border-slate-300 py-2 px-4 text-sm text-slate-600 transition-all hover:text-white hover:bg-slate-800">
             <img src="https://docs.material-tailwind.com/icons/metamask.svg" alt="metamask" className="h-5 w-5 mr-2" />
-            Connect Wallet
+            Connect Wallet (MetaMask)
           </button>
 
           <button className="w-full mt-2 flex items-center justify-center border border-slate-300 py-2 px-4 text-sm text-slate-600 transition-all hover:text-white hover:bg-slate-800">

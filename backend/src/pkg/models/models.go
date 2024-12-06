@@ -15,6 +15,7 @@ type User struct {
 	Bio          string    `json:"bio" gorm:"type:text"`
 	NFTs         []NFT     `json:"nfts" gorm:"foreignKey:OwnerId"`
 	Collections  []Collection `json:"collections" gorm:"foreignKey:OwnerId"`
+	CreatedAt    time.Time `json:"created_at" gorm:"autoCreateTime"`
 }
 
 type Collection struct {
