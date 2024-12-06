@@ -9,13 +9,27 @@ import (
 type User struct {
 	Id           uuid.UUID `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	Name         string    `json:"name" gorm:"type:varchar(50);unique;"`
-	Email        string    `json:"email" gorm:"type:varchar(100);unique;not null"`
+	Email        string    `json:"email" gorm:"type:varchar(100);unique;"`
 	Password     string    `json:"password" gorm:"type:varchar(60);"`
 	ProfileImage string    `json:"profile_image" gorm:"type:varchar(255)"`
 	Bio          string    `json:"bio" gorm:"type:text"`
 	NFTs         []NFT     `json:"nfts" gorm:"foreignKey:OwnerId"`
 	Collections  []Collection `json:"collections" gorm:"foreignKey:OwnerId"`
+	Wallets      []Wallet   `json:"wallets" gorm:"foreignKey:UserId"`
 	CreatedAt    time.Time `json:"created_at" gorm:"autoCreateTime"`
+}
+
+type Wallet struct {
+	Id        uuid.UUID `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	UserId    uuid.UUID `json:"user_id" gorm:"type:uuid;not null"`
+	User      User      `json:"user" gorm:"foreignKey:UserId;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Address   string    `json:"wallet_address" gorm:"type:varchar(50);not null;unique"`
+	Chain     string    `json:"chain" gorm:"type:varchar(50);not null"`
+	Signature string    `json:"signature" gorm:"type:varchar(255);not null"`
+	Nonce     string    `json:"nonce" gorm:"type:varchar(36);not null;default:uuid_generate_v4()"`
+	Verified  bool      `json:"verified" gorm:"default:false"`
+	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime"`
 }
 
 type Collection struct {
