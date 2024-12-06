@@ -56,7 +56,7 @@ Use ETH to buy NFTs.
 All transactions are recorded on the blockchain for transparency.
 🧑‍💻 Technologies
 Frontend
-⚛️ Next.js 13 (App Router)
+⚛️ Next.js 14 (App Router)
 🎨 Tailwind CSS
 Backend
 💻 Go (Gorilla Mux)
@@ -78,11 +78,9 @@ We welcome contributions! 🎉
 Fork the repository.
 Create a feature branch:
 bash
-Copiar código
 git checkout -b feature-name
 Commit your changes:
 bash
-Copiar código
 git commit -m "Add new feature"  
 Push to your fork and create a pull request.
 📄 License
