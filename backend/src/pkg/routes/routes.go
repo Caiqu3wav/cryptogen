@@ -30,6 +30,12 @@ func RegisterRoutes(r *mux.Router) {
 
 	r.HandleFunc("/nft/{id}", handlers.DeleteNft).Methods("DELETE").Name("deleteNft")
 
+	//WALLETS
+
+	r.HandleFunc("/wallet", handlers.WalletRegister).Methods("POST").Name("createWallet")
+
+	r.HandleFunc("/wallet/user/{id}", handlers.WalletLogin).Methods("POST").Name("loginWallet")
+
 	//COLLECTIONS
 
 	r.HandleFunc("/collection", handlers.CreateCollection).Methods("POST").Name("createCollection")
