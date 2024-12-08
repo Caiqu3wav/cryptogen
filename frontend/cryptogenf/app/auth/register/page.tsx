@@ -65,6 +65,8 @@ import { defaultPfpImages } from '@/app/utils'
       setIsLoading(false);
     }
   };
+
+  
    return (
      <>
         <Header/>

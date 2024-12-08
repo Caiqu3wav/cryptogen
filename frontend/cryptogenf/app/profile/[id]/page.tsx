@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { MdError } from "react-icons/md";
 import { userApiDataI } from "@/app/types";
 import { CiEdit } from 'react-icons/ci';
+import { Loader } from "@/app/components/Loader";
 
 export default function Profile() {
     const { data: session, update } = useSession();

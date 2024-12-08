@@ -7,6 +7,7 @@ import { LiaEyeSolid } from "react-icons/lia"
 import { BsEyeSlashFill } from "react-icons/bs"
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { Loader } from '@/app/components/Loader'
 
  export default function Login() {
   const [loginError, setLoginError] = useState('');
@@ -68,7 +69,7 @@ import { useRouter } from 'next/navigation'
         <Header/>
         <div className='flex justify-center items-center h-screen bg-gradient-to-b from-mainSecondColor to-mainColor'>
         {isLoading ? (
-      <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+         <Loader/>
         ) : (
         <form className='flex flex-col bg-gray-500 bg-opacity-45 rounded-lg
          items-center justify-center w-[500px] min-h-[400px] gap-3' onSubmit={handleLogin}>

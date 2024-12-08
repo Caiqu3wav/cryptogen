@@ -53,7 +53,7 @@ export const authOptions: AuthOptions = {
               const { walletAddress, signature } = credentials;
       
               try {
-                const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/login-wallet`, {
+                const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/wallet`, {
                   walletAddress,
                   signature
                 });

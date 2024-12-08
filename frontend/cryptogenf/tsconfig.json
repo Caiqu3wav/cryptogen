@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/TagInput.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "web3.d.ts", ".next/types/**/*.ts", "app/components/TagInput.jsx"],
   "exclude": ["node_modules"]
 }
