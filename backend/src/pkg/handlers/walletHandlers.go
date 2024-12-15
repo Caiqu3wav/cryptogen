@@ -13,57 +13,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func AddWallet(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	userID := vars["userId"]
-
-	var input struct {
-		WalletAddress string `json:"wallet_address"`
-		Signature     string `json:"signature"`
-	}
-	
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
-		return
-	}
-
-	//check validation of the signature to the crypto wallet adress
-	if !ValidateSignature(input.WalletAddress, input.Signature) {
-		http.Error(w, "Invalid wallet signature", http.StatusBadRequest)
-		return
-	}
-
-	//get the user from DB
-	var user models.User
-	if err := database.DB.Preload("Wallets").First(&user, "id = ?", userID).Error; err != nil {
-		http.Error(w, "User not found", http.StatusNotFound)
-		return
-	}
-
-	//check wallet existence
-	for _, wallet := range user.Wallets {
-		if strings.ToLower(wallet.Address) == strings.ToLower(input.WalletAddress) {
-			http.Error(w, "Wallet already registered for this user", http.StatusConflict)
-			return
-		}
-	}
-
-	//create
-		newWallet := models.Wallet{
-			Address: input.WalletAddress,
-			UserId:  user.Id,
-		}
-
-		//save wallet on DB
-		if err := database.DB.Create(&newWallet).Error; err != nil {
-			http.Error(w, "Failed to save wallet", http.StatusInternalServerError)
-			return
-		}
-
-		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Wallet added successfully"})
-}
-
 func GetWalletsHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userID := vars["userId"]
@@ -71,11 +20,11 @@ func GetWalletsHandler(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	if err := database.DB.Preload("Wallets").First(&user, "id = ?", userID).Error; err != nil {
 		http.Error(w, "User not found", http.StatusNotFound)
-		return
+		return;
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(user.Wallets)
+	w.WriteHeader(http.StatusOK);
+	json.NewEncoder(w).Encode(user.Wallets);
 }
 
 func WalletRegister(w http.ResponseWriter, r *http.Request) {
