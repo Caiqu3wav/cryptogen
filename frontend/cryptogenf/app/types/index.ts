@@ -6,11 +6,11 @@ export interface NftProps {
     price: number;
     tags: string[];
     category: string;
-    owner: OwnerI; 
+    owner: OwnerI;
     collection: CollectionI; 
     floorPrice: number;
-    volume: number; 
-    lastSale: number; 
+    volume: number;
+    lastSale: number;
     totalSales: number;
     trends: TrendI;
     createdAt: string; 
@@ -33,7 +33,7 @@ export interface userDataI {
     id: string;
     name: string;
     email: string;
-    profilePic: string;
+    profile_image: string;
 }
 
 export interface userApiDataI {

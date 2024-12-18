@@ -4,16 +4,15 @@ import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdError } from "react-icons/md";
-import { userApiDataI } from "@/app/types";
+import { userDataI } from "@/app/types";
 import { CiEdit } from 'react-icons/ci';
-import { Loader } from "@/app/components/Loader";
 
 export default function Profile() {
     const { data: session, update } = useSession();
     const pathname = usePathname();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
-    const [userProfileData, setUserProfileData] = useState<userApiDataI>();
+    const [userProfileData, setUserProfileData] = useState<userDataI>();
     const [editMode, setEditMode] = useState(false);
     const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
 
@@ -27,8 +26,9 @@ export default function Profile() {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId.toString()}`);
                 if (res.ok) {
                     const userData = await res.json();
+                    console.log(userData)
                     setUserProfileData(userData);
-                    setProfileImage(userData.ProfileImage);
+                    setProfileImage(userData.profile_image);
                 } else {
                     setError("Erro ao encontrar usuário");
                 }
@@ -54,7 +54,7 @@ export default function Profile() {
                 body: JSON.stringify({ 
                     name: e.target.name.value,
                     email: e.target.email.value, 
-                    profile_image: profileImage || userProfileData?.ProfileImage 
+                    profile_image: profileImage || userProfileData?.profile_image 
                 })
             });
             if (res.ok) {
@@ -89,16 +89,16 @@ export default function Profile() {
                 setUserProfileData((prevData) => {
                     if (!prevData) {
                       return {
-                        Id: '', Name: '',  Email: '', ProfileImage: data.imageUrl,
+                        id: '', name: '',  email: '', profile_image: data.profile_image,
                       };
                     }
 
                     return {
                       ...prevData,
-                      ProfileImage: data.imageUrl,
+                      profile_image: data.profile_image,
                     };
                   });    
-                  setProfileImage(data.imageUrl);
+                  setProfileImage(data.profile_image);
                         } else {
                 setError("Erro ao atualizar imagem de perfil");
                 console.error("Erro ao enviar a imagem:", data.message);
@@ -121,13 +121,13 @@ export default function Profile() {
                     </>
                 ) : (
                     <div className="bg-slate-50 min-h-[450px] min-w-[300px] rounded-lg flex flex-col items-center justify-around py-2">
-                        {!editMode && <img src={userProfileData?.ProfileImage} className="w-[120px] rounded-xl" alt="user profile image" />}
+                        {!editMode && <img src={userProfileData?.profile_image} className="w-[120px] rounded-xl" alt="user profile image" />}
                         <div className="flex flex-col items-center">
                             {editMode ? (
                                 <form onSubmit={updateUserProfileData} className="flex flex-col gap-3">
                                     <div className="self-center w-fit h-fit cursor-pointer">
                                         <label htmlFor="profileImage" className="relative w-fit h-fit group cursor-pointer">
-                                            <img src={userProfileData?.ProfileImage}
+                                            <img src={userProfileData?.profile_image}
                                                 className="w-[120px] rounded-xl object-cover group-hover:brightness-50"
                                                 alt="Profile" />
                                             <div className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -142,18 +142,18 @@ export default function Profile() {
                                             className="hidden z-50 cursor-pointer"
                                             />
                                     </div>
-                                    <input type="text" defaultValue={userProfileData?.Name} required name="name" className="bg-slate-200 px-4 py-2 rounded-lg mt-5" />
-                                    <input type="email" name="email" defaultValue={userProfileData?.Email} required className="bg-slate-200 px-4 py-2 rounded-lg mt-2" />
+                                    <input type="text" defaultValue={userProfileData?.name} required name="name" className="bg-slate-200 px-4 py-2 rounded-lg mt-5" />
+                                    <input type="email" name="email" defaultValue={userProfileData?.email} required className="bg-slate-200 px-4 py-2 rounded-lg mt-2" />
                                     <button type="submit" className="bg-mainColor text-slate-50 px-4 py-2 rounded-lg mt-5">Save</button>
                                 </form>
                             ) : (
                                 <>
-                                    <p className="text-2xl font-bold mt-5">{userProfileData?.Name}</p>
-                                    <p className="mt-2">{userProfileData?.Email}</p>
+                                    <p className="text-2xl font-bold mt-5">{userProfileData?.name}</p>
+                                    <p className="mt-2">{userProfileData?.email}</p>
                                 </>
                             )}
                         </div>
-                        {session?.user.id == userProfileData?.Id && (
+                        {session?.user.id == userProfileData?.id && (
                             <>
                                 <button onClick={() => setEditMode(!editMode)} className="bg-mainColor text-slate-50 px-4 py-2 rounded-lg mt-5"><h2>{editMode ? "Apenas visualisar" : "Editar perfil"}</h2></button>
                                 <button className="bg-red-500 text-slate-50 px-4 py-2 rounded-lg mt-2">Delete Account</button>
