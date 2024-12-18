@@ -88,49 +88,69 @@ import { defaultPfpImages } from '@/app/utils'
           ) : 
              (
             <form className='flex flex-col items-center justify-center gap-3' onSubmit={handleSignup}>
-            <h1 className='text-white'>Create your account</h1>
-                  <label>Name:
-                            <input className="rounded-lg bg-gray-400"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                                type="name"
-                                name="name"
-                                required
-                            />
-                        </label> 
-                  <label>Email:
-                            <input className="rounded-lg bg-gray-400"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                                type="email"
-                                name="email"
-                                required
-                            />
-                        </label>
-                                    <label>
-                      Password:
-                            <input className="rounded-lg bg-gray-400"
-                                type={!isVisible ? "password" : "text"}
-                                name="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                            <button onClick={() => setIsVisible(!isVisible)} style={{ backgroundColor: 'transparent' }} type="button" id="togglePassword">
-                               {isVisible ? <BsEyeSlashFill /> : <LiaEyeSolid />}
-                            </button>
-                        </label>     
-                        <label>Confirmar Senha: 
-                            <input className='rounded-lg bg-gray-400'
-                                type={!isVisible ? "password" : "text"}
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
-                            />
-                            <button onClick={() => setIsVisible(!isVisible)} style={{ backgroundColor: 'transparent' }} type="button">
-                               {isVisible ? <BsEyeSlashFill /> : <LiaEyeSolid />}
-                            </button>
-                        </label>
+            <h1 className="text-white">Create your account</h1>
+
+<div className="flex items-center gap-2">
+  <label htmlFor="name">Name:</label>
+  <input
+    className="rounded-lg bg-gray-400"
+    value={name}
+    onChange={(e) => setName(e.target.value)}
+    type="text"
+    name="name"
+    required
+  />
+</div>
+
+<div className="flex items-center gap-2">
+  <label htmlFor="email">Email:</label>
+  <input
+    className="rounded-lg bg-gray-400"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    type="email"
+    name="email"
+    required
+  />
+</div>
+
+<div className="flex items-center gap-2">
+  <label htmlFor="password">Password:</label>
+  <input
+    className="rounded-lg bg-gray-400"
+    type={!isVisible ? "password" : "text"}
+    name="password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    required
+  />
+  <button
+    onClick={() => setIsVisible(!isVisible)}
+    style={{ backgroundColor: "transparent" }}
+    type="button"
+    id="togglePassword"
+  >
+    {isVisible ? <BsEyeSlashFill /> : <LiaEyeSolid />}
+  </button>
+</div>
+
+<div className="flex items-center gap-2">
+  <label htmlFor="confirmPassword">Confirmar Senha:</label>
+  <input
+    className="rounded-lg bg-gray-400"
+    type={!isVisible ? "password" : "text"}
+    value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)}
+    required
+  />
+  <button
+    onClick={() => setIsVisible(!isVisible)}
+    style={{ backgroundColor: "transparent" }}
+    type="button"
+  >
+    {isVisible ? <BsEyeSlashFill /> : <LiaEyeSolid />}
+  </button>
+</div>
                         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                             <button type='submit'>Sign</button>
                     <p>Already have your account yet? Go to login: </p>
