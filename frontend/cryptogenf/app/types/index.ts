@@ -55,4 +55,5 @@ export interface CollectionI {
     imageUrl: string,
     tags: string[],
     owner: OwnerI,
-    nfts?: NftProps[];}
+    nfts?: NftProps[];
+}

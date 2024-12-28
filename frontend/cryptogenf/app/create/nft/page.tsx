@@ -5,6 +5,7 @@ import { FaPlus } from "react-icons/fa"
 import { useState, useEffect } from "react"
 import { CollectionI } from "@/app/types"
 import { useSession } from "next-auth/react"
+import UserCollections from "@/app/components/UserCollectionCards"
 
 export default function CreateNFTItem() {
     const [userCollections, setUserCollections] = useState<CollectionI[] | null>(null)
@@ -57,8 +58,10 @@ export default function CreateNFTItem() {
                             >
                                 <option>Select a Collection</option>
                                 {userCollections.map((collection) => (
-                                    <option key={collection.id} value={collection.id}>
-                                        {collection.name}
+                                    <option className="flex justify-between items-center" key={collection.id} value={collection.id}>
+                                        <img src={collection.imageUrl} alt="" />
+                                        <h2>{collection.name}</h2>
+                                        <p>{collection.symbol}</p>
                                     </option>
                                 ))}
                             </select>

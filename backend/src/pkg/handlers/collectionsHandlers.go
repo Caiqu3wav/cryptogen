@@ -142,5 +142,11 @@ func GetUserCollections(w http.ResponseWriter, r *http.Request) {
     if err := database.DB.Find(&collections, "owner_id = ?", id).Error; err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
+	} 
+
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(collections); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }

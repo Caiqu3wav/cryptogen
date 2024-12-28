@@ -98,6 +98,7 @@ export default function Collection() {
                     description: e.target.description.value,
                     ownerId: session?.user.id,
                     tags: tags,
+                    symbol: e.target.symbol.value,
                     category: e.target.category.value,
                     imageUrl: imageUrl,
                     blockchain: blockchainSelected?.name
@@ -151,14 +152,14 @@ export default function Collection() {
                             <div className="flex gap-2 midtwo3:flex-col">
                                 <div>
                                     <label htmlFor="name">Collection Name</label>
-                                    <input type="text" className="ml-3 bg-gray-400 rounded-md" name="name" id="" />
+                                    <input type="text" className="ml-3 bg-gray-400 rounded-md" name="name" />
                                 </div>
                                 <div>
-                                    <label htmlFor="name">Collection Symbol</label>
+                                    <label htmlFor="symbol">Collection Symbol</label>
                                     <input type="text" className="ml-3 bg-gray-400 rounded-md" onInput={(e) => {
                                         const input = e.target as HTMLInputElement;
                                         input.value = input.value.toUpperCase();
-                                    }} maxLength={3} placeholder="MCN" name="symbol" id="" />
+                                    }} maxLength={3} placeholder="MCN" name="symbol" />
                                 </div>
                             </div>
                             <label htmlFor="image">Collection Logo Image</label>
