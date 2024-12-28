@@ -52,7 +52,7 @@ export interface CollectionI {
     id: string,
     name: string,
     description: string,
-    imageUrl: string,
+    image_url: string,
     tags: string[],
     owner: OwnerI,
     nfts?: NftProps[];

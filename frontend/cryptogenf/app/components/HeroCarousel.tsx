@@ -39,7 +39,7 @@ export default function HeroCarousel() {
       if (width < 554) {
         setSpaceBetween(20);
         setSlidesPerView(2);
-      } else if (width < 768) 
+      } else if (width < 768) {
         setSpaceBetween(30);
         setSlidesPerView(3);
       } else {
