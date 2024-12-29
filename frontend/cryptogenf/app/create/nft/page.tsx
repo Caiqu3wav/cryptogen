@@ -33,11 +33,12 @@ export default function CreateNFTItem() {
     }, [session?.user.id]);
 
     const handleCollectionChange = (collection: CollectionI) => {
-        if (collection?.id === collection.id) {
+        if (collectionSelected?.id === collection.id) {
             setCollectionSelected(null);
             return;
         }
         setCollectionSelected(collection);
+        console.log(collectionsSelected + "a");
     };
 
     return (
@@ -67,7 +68,11 @@ export default function CreateNFTItem() {
                                 ) : (
                                     <div>
                                         {userCollections.map((collection) => (
-                                            <button className={`${collectionSelected?.name !== collection.name ? 'border-none' : 'border-dotted border-white border-2'} bg-gray-700 bg-opacity-60 rounded-lg p-2`} type="button" key={collection.id}
+                                            <button className={`${
+                                                collectionSelected?.id !== collection.id 
+                                                    ? 'border-none' 
+                                                    : 'border-dotted border-white border-2'
+                                            } bg-gray-700 bg-opacity-60 rounded-lg p-2`} type="button" key={collection.id}
                                                 onClick={() => handleCollectionChange(collection)}>
                                                 <div className="flex gap-4 items-center">
                                                     <img src={collection.image_url} width={40} alt={collection.name} />
