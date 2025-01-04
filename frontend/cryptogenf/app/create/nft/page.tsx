@@ -23,7 +23,6 @@ export default function CreateNFTItem() {
                     const userCData: CollectionI[] = await res.json();
                     setUserCollections(userCData);
                 }
-
             } catch (error) {
                 console.log("Nfts não encontradas", error);
             }
@@ -38,7 +37,6 @@ export default function CreateNFTItem() {
             return;
         }
         setCollectionSelected(collection);
-        console.log(collectionsSelected + "a");
     };
 
     return (
