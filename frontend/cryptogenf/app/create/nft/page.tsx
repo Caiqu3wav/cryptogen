@@ -64,11 +64,11 @@ export default function CreateNFTItem() {
                                         </p>
                                     </div>
                                 ) : (
-                                    <div>
+                                    <div className="py-2">
                                         {userCollections.map((collection) => (
                                             <button className={`${
                                                 collectionSelected?.id !== collection.id 
-                                                    ? 'border-none' 
+                                                    ? 'border-none'
                                                     : 'border-dotted border-white border-2'
                                             } bg-gray-700 bg-opacity-60 rounded-lg p-2`} type="button" key={collection.id}
                                                 onClick={() => handleCollectionChange(collection)}>
@@ -76,7 +76,7 @@ export default function CreateNFTItem() {
                                                     <img src={collection.image_url} width={40} alt={collection.name} />
                                                     <h1>{collection.name}</h1>
                                                 </div>
-                                                <p className=" text-gray-700 text-opacity-70">{collection.description}</p>
+                                                <p className="text-black text-opacity-70">{collection.description}</p>
                                             </button>
                                         ))}
                                     </div>
