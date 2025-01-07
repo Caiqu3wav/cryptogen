@@ -8,21 +8,8 @@ import TagInput from "@/app/components/TagInput"
 import { BsFillCloudUploadFill } from "react-icons/bs"
 import "../../styles/fileInput.css"
 import { FaEthereum } from "react-icons/fa";
-
-type BlockchainType = {
-    id: number;
-    name: string;
-}
-
-const blockchainsOptions = [
-    {
-        id: 1,
-        name: "Ethereum",
-        image: '',
-        deployCost: 8.99,
-        description: "Most popular blockchain"
-    }
-]
+import { blockchainsOptions } from "@/app/utils"
+import { BlockchainType } from "@/app/types"
 
 export default function Collection() {
     const [isError, setIsError] = useState(false);
@@ -199,9 +186,11 @@ export default function Collection() {
                                 <label htmlFor="category">Collection Category</label>
                                 <select className="bg-slate-400 rounded-lg ml-3" name="category">
                                     <option value="art">Art</option>
+                                    <option value="games">Games</option>
                                     <option value="music">Music</option>
                                     <option value="photography">Photography</option>
                                     <option value="pfp">PFP</option>
+                                    <option value="signatures">Signatures</option>
                                 </select>
                             </div>
                             <div>

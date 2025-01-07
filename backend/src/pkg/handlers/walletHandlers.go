@@ -7,15 +7,19 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-
+	"github.com/gin-gonic/gin"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/gorilla/mux"
 )
 
-func GetWalletsHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	userID := vars["userId"]
+func GetNonce(c *gin.Context) {
+	nonce := uuid.New().String()
+	c.JSON(http.StatusOK, gin.H{"nonce": nonce})
+}
+
+func GetWalletsHandler(c *gin.Context) {
+	userID := c.Param("userId")
 
 	var user models.User
 	if err := database.DB.Preload("Wallets").First(&user, "id = ?", userID).Error; err != nil {
@@ -23,55 +27,59 @@ func GetWalletsHandler(w http.ResponseWriter, r *http.Request) {
 		return;
 	}
 
-	w.WriteHeader(http.StatusOK);
-	json.NewEncoder(w).Encode(user.Wallets);
+	c.JSON(http.StatusOK, user.Wallets)
 }
 
-func WalletRegister(w http.ResponseWriter, r *http.Request) {
+func WalletAuth(c *gin.Context) {
 	var payload struct {
 		WalletAddress string `json:"walletAddress"`
 		Signature     string `json:"signature"`
-		Chain         string `json:"chain"`
+		Nonce         string `json:"nonce"`
+		Chain 		  string `json:"chain"`
 	}
 
-	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+	if err := c.BindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
 		return
 	}
 
-	//validate the signature with the wallet address
 	if !ValidateSignature(payload.WalletAddress, payload.Signature) {
-		http.Error(w, "Invalid signature", http.StatusUnauthorized)
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid signature"})
 		return
 	}
 
-	user := GetUserByWalletAddress(payload.WalletAddress)
-    if user != nil {
-        //return the user if the wallet already exists
-        w.Header().Set("Content-Type", "application/json")
-        json.NewEncoder(w).Encode(user)
-        return
-    }
+	var user models.User
+	db := database.DB
 
-	newUser := models.User{
-    Wallets: []models.Wallet{{
-        Address:   payload.WalletAddress,
-        Chain:     payload.Chain,
-        Signature: payload.Signature,
-        Verified:  false, // Set to default
-    }},
-}
-	if err := database.DB.Create(&newUser).Error; err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	var wallet models.Wallet
+	result := db.Where("address = ?", payload.WalletAddress).First(&wallet)
+
+	if result.Error != nil {
+		user = models.User{
+			Wallets: []models.Wallet{
+				{
+					Name:  "Novo Usuário",
+					Email: "",
+				}
+				db.Create(&user)
+
+				wallet = models.Wallet{
+					WalletAddress: payload.WalletAddress,
+					Nonce:         payload.Nonce,
+					Chain:         payload.Chain,
+					UserID:        user.ID,
+					Signature: payload.Signature,
+					Verified: true,
+				}
+			},
+		}
+		db.Create(&user)
+	} else {
+		db.Preload("Wallets").Where("id = ?", wallet.UserId).First(&user)
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(newUser)
+	c.JSON(http.StatusOK, gin.H{"user": user, "wallet": wallet})
 }
-
-
 
 func GetUserByWalletAddress(walletAddress string) *models.User {
 	var user models.User
@@ -83,34 +91,8 @@ func GetUserByWalletAddress(walletAddress string) *models.User {
 	return &user
 }
 
-func WalletLogin(w http.ResponseWriter, r *http.Request) {
-	var payload struct {
-		WalletAddress string `json:"walletAddress"`
-		Signature     string `json:"signature"`
-	}
 
-	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	if !ValidateSignature(payload.WalletAddress, payload.Signature) {
-		http.Error(w, "Assinatura inválida", http.StatusUnauthorized)
-		return
-	}
-
-
-	user := GetUserByWalletAddress(payload.WalletAddress)
-	if user == nil {
-		http.Error(w, "Usuário não encontrado", http.StatusNotFound)
-		return
-	}
-
-	json.NewEncoder(w).Encode(map[string]interface{}{"user": user})
-}
-
-
-func ValidateSignature(walletAddress string, signature string) bool {
+func ValidateSignature(walletAddress string, signature string, nonce string) bool {
 	//normalize the wallet address
 	walletAddress = strings.ToLower(strings.TrimPrefix(walletAddress, "0x"))
 
@@ -127,8 +109,8 @@ func ValidateSignature(walletAddress string, signature string) bool {
 	}
 	sigBytes[64] = v - 27
 
-	//define the message hash
-	message := []byte("Your message or challenge string here")
+	//define hash with nonce
+	message := []byte("Login Verification: " + nonce)
 	hash := crypto.Keccak256Hash([]byte("\x19Ethereum Signed Message:\n" + string(len(message)) + string(message)))
 
 	//brings the public key of the wallet
@@ -145,7 +127,33 @@ func ValidateSignature(walletAddress string, signature string) bool {
 
 	//convert the wallet public key to an Ethereum address
 	recoveredAddress := crypto.PubkeyToAddress(*publicKey).Hex()
-
-	//compares the address brought by the mother
 	return strings.ToLower(recoveredAddress) == walletAddress
+}
+
+
+func UpdateWallet(c *gin.Context) {
+	var payload struct {
+		WalletAddress string `json:"walletAddress"`
+		Signature     string `json:"signature"`
+		Chain 		  string `json:"chain"`
+	}
+
+	if err := c.BindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+		return
+	}
+
+	var wallet models.Wallet
+	db := database.DB
+
+	if err := db.Where("address = ?", payload.WalletAddress).First(&wallet).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Failed to update wallet"})
+		return
+	}
+
+	wallet.Chain = payload.Chain
+	wallet.Signature = payload.Signature
+	db.Save(&wallet)
+
+	c.JSON(http.StatusOK, gin.H{"message": "Wallet updated successfully"})
 }

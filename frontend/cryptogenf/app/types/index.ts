@@ -57,3 +57,9 @@ export interface CollectionI {
     owner: OwnerI,
     nfts?: NftProps[];
 }
+
+
+export type BlockchainType = {
+    id: number;
+    name: string;
+}

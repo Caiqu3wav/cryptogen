@@ -9,6 +9,7 @@ import {useSession} from 'next-auth/react'
 import ProfileModal from '../ProfileModal'
 import { CgProfile } from "react-icons/cg"
 import { FaRegSquarePlus } from "react-icons/fa6"
+import { RiWallet3Fill } from "react-icons/ri";
 
 export default function Header() {
 const {data: session} = useSession();
@@ -31,6 +32,12 @@ const {data: session} = useSession();
       </Link>
       </>
     ) : (
+      <div className='flex gap-4 items-center justify-center'>
+        <button className='flex items-center text-lg justify-center gap-2 rounded-2xl bg-slate-500 px-2 py-2'>
+        <RiWallet3Fill/>
+        <p>|</p>
+        <p>Add Wallet</p>
+        </button>
         <div className='flex flex-col items-center justify-center gap-2'>
         <p className='mr-6 text-white'>{session.user?.name}</p>
         <button onClick={() => setProfileModalOpen(!profileModalOpen)} className='mr-6'>
@@ -46,6 +53,7 @@ const {data: session} = useSession();
         <p>Create</p>
       </Link>
       {profileModalOpen && <ProfileModal isOpen={profileModalOpen} setIsOpen={setProfileModalOpen}/>}
+      </div>
       </div>
     )
   }

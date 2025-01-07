@@ -46,7 +46,6 @@ type Collection struct {
 	NFTs        []NFT          `json:"nfts" gorm:"foreignKey:CollectionId"`
 	CreatedAt   time.Time      `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt   time.Time      `json:"updated_at" gorm:"autoUpdateTime"`
-	CollectionType string `json:"collection_type" gorm:"type:varchar(20);not null"`
 }
 
 type NFT struct {
