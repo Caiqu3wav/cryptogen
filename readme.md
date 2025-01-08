@@ -25,7 +25,7 @@ Make sure you have the following installed:
 ### Setup  
 1. **Clone the repository**:  
    ```bash
-   git clone https://github.com/your-username/cryptogen.git
+   git clone https://github.com/Caiqu3wav/cryptogen.git
    cd cryptogen
 Install dependencies:
 
