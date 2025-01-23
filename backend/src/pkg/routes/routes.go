@@ -1,9 +1,20 @@
 package routes
 
 import (
-	"github.com/gorilla/mux"
 	"cryptogen/src/pkg/handlers"
+	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
+
+func WrapGinHandler(handler gin.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		c, _ := gin.CreateTestContext(w)
+		c.Request = r
+		handler(c)
+	}
+}
 
 func RegisterRoutes(r *mux.Router) {
 
@@ -32,9 +43,7 @@ func RegisterRoutes(r *mux.Router) {
 
 	//WALLETS
 
-	r.HandleFunc("/wallet", handlers.WalletRegister).Methods("POST").Name("createWallet")
-
-	r.HandleFunc("/wallet/user/{id}", handlers.WalletLogin).Methods("POST").Name("loginWallet")
+	r.HandleFunc("/wallet", WrapGinHandler(handlers.WalletAuth)).Methods("POST").Name("createWallet")
 
 	//COLLECTIONS
 
