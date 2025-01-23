@@ -4,13 +4,12 @@ import (
 	"cryptogen/src/pkg/database"
 	"cryptogen/src/pkg/models"
 	"encoding/hex"
-	"encoding/json"
 	"net/http"
 	"strings"
+	"github.com/google/uuid"
 	"github.com/gin-gonic/gin"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
-	"github.com/gorilla/mux"
 )
 
 func GetNonce(c *gin.Context) {
@@ -23,7 +22,7 @@ func GetWalletsHandler(c *gin.Context) {
 
 	var user models.User
 	if err := database.DB.Preload("Wallets").First(&user, "id = ?", userID).Error; err != nil {
-		http.Error(w, "User not found", http.StatusNotFound)
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return;
 	}
 
@@ -43,42 +42,48 @@ func WalletAuth(c *gin.Context) {
 		return
 	}
 
-	if !ValidateSignature(payload.WalletAddress, payload.Signature) {
+	if !ValidateSignature(payload.WalletAddress, payload.Signature, payload.Nonce) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid signature"})
 		return
 	}
 
-	var user models.User
 	db := database.DB
-
 	var wallet models.Wallet
-	result := db.Where("address = ?", payload.WalletAddress).First(&wallet)
 
-	if result.Error != nil {
-		user = models.User{
-			Wallets: []models.Wallet{
-				{
-					Name:  "Novo Usuário",
-					Email: "",
-				}
-				db.Create(&user)
-
-				wallet = models.Wallet{
-					WalletAddress: payload.WalletAddress,
-					Nonce:         payload.Nonce,
-					Chain:         payload.Chain,
-					UserID:        user.ID,
-					Signature: payload.Signature,
-					Verified: true,
-				}
-			},
-		}
-		db.Create(&user)
-	} else {
-		db.Preload("Wallets").Where("id = ?", wallet.UserId).First(&user)
+	tx := db.Begin()
+	
+	if err := tx.Where("wallet_address = ?", payload.WalletAddress).FirstOrCreate(&wallet, models.Wallet{
+		Address: payload.WalletAddress,
+		Nonce: payload.Nonce,
+		Signature: payload.Signature,
+		Chain: payload.Chain,
+		Verified: true,
+	}).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create wallet"})
+		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"user": user, "wallet": wallet})
+	if wallet.UserId == uuid.Nil {
+		var user models.User
+		if err := tx.Create(&user).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+			return
+		}
+
+		wallet.UserId = user.Id
+
+		if err := tx.Save(&wallet).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update wallet"})
+			return
+		}
+	}
+
+	tx.Commit()
+
+	c.JSON(http.StatusOK, gin.H{"user": wallet.User, "wallet": wallet})
 }
 
 func GetUserByWalletAddress(walletAddress string) *models.User {
