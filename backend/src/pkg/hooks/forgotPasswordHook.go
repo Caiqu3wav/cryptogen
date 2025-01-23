@@ -16,7 +16,7 @@ func SendResetEmail(toEmail string, ResetLink string) error {
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", "noreply@localhost")
-	m.SetHeader("To", ToEmail)
+	m.SetHeader("To", toEmail)
 	m.SetHeader("Subject", "Password Reset")
 	m.SetBody("text/html", fmt.Sprintf("Click <a href=\"%s\">here</a> to reset your password.", ResetLink))
 

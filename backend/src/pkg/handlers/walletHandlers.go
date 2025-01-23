@@ -17,7 +17,19 @@ func GetNonce(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"nonce": nonce})
 }
 
-func GetWalletsHandler(c *gin.Context) {
+func GetWallet(c *gin.Context) {
+	walletAddress := c.Param("walletAddress")
+
+	var wallet models.Wallet
+	if err := database.DB.Preload("User").First(&wallet, "wallet_address = ?", walletAddress).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Wallet not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, wallet)
+}
+
+func GetWallets(c *gin.Context) {
 	userID := c.Param("userId")
 
 	var user models.User
@@ -161,4 +173,20 @@ func UpdateWallet(c *gin.Context) {
 	db.Save(&wallet)
 
 	c.JSON(http.StatusOK, gin.H{"message": "Wallet updated successfully"})
+}
+
+func DeleteWallet(c *gin.Context) {
+	walletAddress := c.Param("walletAddress")
+
+	var wallet models.Wallet
+	db := database.DB
+
+	if err := db.Where("address = ?", walletAddress).First(&wallet).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Wallet not found"})
+		return
+	}
+
+	db.Delete(&wallet)
+
+	c.JSON(http.StatusOK, gin.H{"message": "Wallet deleted successfully"})
 }

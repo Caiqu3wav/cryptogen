@@ -45,6 +45,16 @@ func RegisterRoutes(r *mux.Router) {
 
 	r.HandleFunc("/wallet", WrapGinHandler(handlers.WalletAuth)).Methods("POST").Name("createWallet")
 
+	r.HandleFunc("/wallet/{id}", WrapGinHandler(handlers.GetWallet)).Methods("GET").Name("getWallet")
+
+	r.HandleFunc("/wallet", WrapGinHandler(handlers.GetWallets)).Methods("GET").Name("getWallets")
+
+	r.HandleFunc("/wallet/{id}", WrapGinHandler(handlers.UpdateWallet)).Methods("PUT").Name("updateWallet")
+
+	r.HandleFunc("/wallet/{id}", WrapGinHandler(handlers.DeleteWallet)).Methods("DELETE").Name("deleteWallet")
+
+	r.HandleFunc("/auth/nonce", WrapGinHandler(handlers.GetNonce)).Methods("GET").Name("getNonce")
+
 	//COLLECTIONS
 
 	r.HandleFunc("/collection", handlers.CreateCollection).Methods("POST").Name("createCollection")
