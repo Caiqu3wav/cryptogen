@@ -5,8 +5,6 @@ import { FaPlus } from "react-icons/fa"
 import { useState, useEffect } from "react"
 import { CollectionI } from "@/app/types"
 import { useSession } from "next-auth/react"
-import UserCollections from "@/app/components/UserCollectionCards"
-import { CollectionI } from "@/app/types"
 
 export default function CreateNFTItem() {
     const [userCollections, setUserCollections] = useState<CollectionI[] | null>(null);
