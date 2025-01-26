@@ -46,7 +46,6 @@ func WalletAuth(c *gin.Context) {
 		WalletAddress string `json:"walletAddress"`
 		Signature     string `json:"signature"`
 		Nonce         string `json:"nonce"`
-		Chain 		  string `json:"chain"`
 	}
 
 	if err := c.BindJSON(&payload); err != nil {
@@ -68,7 +67,6 @@ func WalletAuth(c *gin.Context) {
 		Address: payload.WalletAddress,
 		Nonce: payload.Nonce,
 		Signature: payload.Signature,
-		Chain: payload.Chain,
 		Verified: true,
 	}).Error; err != nil {
 		tx.Rollback()

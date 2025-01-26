@@ -1,56 +1,69 @@
-import { useAccount, useConnect, useDisconnect, useSignMessage, } from 'wagmi';
+import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 import { RiWallet3Fill } from 'react-icons/ri';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 export default function WalletButton() {
     const { address, isConnected } = useAccount();
-    const {connect, connectors} = useConnect();
+    const { open } = useWeb3Modal();
     const { disconnect } = useDisconnect();
     const { signMessageAsync } = useSignMessage();
-    const [nonce, setNonce] = useState('');
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchNonce = async () => {
-           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}auth/nonce`);
-           const data = await res.json();
-           setNonce(data.nonce);
-        };
-          fetchNonce();
-    }, []);
-
     const handleConn = async () => {
-        if (isConnected) {
-            disconnect();
-            return;
+      try {
+        setLoading(true);
+        if (!isConnected) {
+          await open();
+
+          if (address) {
+            await handleBackend(address);
+          }
+        } else {
+          disconnect();
+        }
+      } catch (error) {
+        console.error('Error connecting/disconnecting:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const handleBackend = async (walletAddress) => {
+      try {
+       const nonceRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/nonce`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json', },
+          body: JSON.stringify({ address: walletAddress }),
+        });
+
+        const { nonce } = await nonceRes.json();
+        if (!nonce) {
+          throw new Error('Nonce not found');
         }
 
-        try {
-            const connector = connectors[0];
-            await connect({ connector });
+        const signature = await signMessageAsync({ message: nonce });
 
-            setLoading(true);
+        const authResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/wallet`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', },
+          body: JSON.stringify({ 
+            address: walletAddress, 
+            signature,
+            nonce,
+           }),
+       });
 
-            const signature = await signMessageAsync({ message: nonce });
+        const result = await authResponse.json();
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/wallet`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address, signature }),
-              });            
-              
-              if (res.ok) {
-                alert('Wallet connected!');
-              } else {
-                alert('Verification Failer!');
-                disconnect();
-              }
-        } catch(err) {
-            console.error(err);
-            disconnect();
-        } finally {
-            setLoading(false);
+        if (authResponse.ok) {
+          console.log('Authentication successful:', result);
+        } else {
+          console.error('Authentication failed:', result);
         }
+      } catch (error) {
+        console.error('Error signing message:', error);
+      }
     };
 
     return (

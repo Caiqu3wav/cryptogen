@@ -1,8 +1,8 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
+import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios from 'axios'
 
-const authOptions: NextAuthOptions = {
+const authOptions: AuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -71,7 +71,7 @@ const authOptions: NextAuthOptions = {
                 }
       
                 return user;
-              } catch (error) {
+              } catch (error) { 
                 console.error("Failed to authorize wallet", error);
                 throw new Error("Wallet authentication failed");
               }
