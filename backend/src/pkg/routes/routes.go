@@ -17,7 +17,6 @@ func WrapGinHandler(handler gin.HandlerFunc) http.HandlerFunc {
 }
 
 func RegisterRoutes(r *mux.Router) {
-
 	//USERS
 	r.HandleFunc("/login", handlers.SignIn).Methods("POST").Name("login")
 

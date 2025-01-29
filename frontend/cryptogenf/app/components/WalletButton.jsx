@@ -18,6 +18,7 @@ export default function WalletButton() {
 
           if (address) {
             await handleBackend(address);
+            console.log('Wallet connected:', address);
           }
         } else {
           disconnect();
@@ -34,7 +35,6 @@ export default function WalletButton() {
        const nonceRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/nonce`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json', },
-          body: JSON.stringify({ address: walletAddress }),
         });
 
         const { nonce } = await nonceRes.json();
@@ -69,7 +69,8 @@ export default function WalletButton() {
     return (
         <button
       onClick={handleConn}
-      className="flex items-center text-lg justify-center gap-2 rounded-2xl bg-slate-500 px-2 py-2"
+      className="flex items-center text-lg justify-center gap-2 rounded-2xl bg-slate-500 hover:bg-purple-400 hover:text-white transition-colors duration-300
+       px-2 py-2"
     >
       <RiWallet3Fill />
       <p>|</p>

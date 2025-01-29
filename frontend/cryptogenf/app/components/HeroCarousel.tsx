@@ -18,7 +18,7 @@ export default function HeroCarousel() {
   useEffect(() => {
       const getNfts = async () => {
           try {
-              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/nfts`);
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/nft`);
               if (res.ok) {
                   const nftsData: NftProps[] = await res.json();
                   setNfts(nftsData);
@@ -43,7 +43,7 @@ export default function HeroCarousel() {
         setSpaceBetween(30);
         setSlidesPerView(3);
       } else {
-        setSpaceBetween(30)
+        setSpaceBetween(30);
         setSlidesPerView(3);
       }
     };
@@ -58,7 +58,7 @@ export default function HeroCarousel() {
     <div className="flex w-full h-fit min-h-52 items-center justify-center">
      <Swiper modules={[Navigation, Pagination, Autoplay]}
         autoplay={{
-          delay: 3000, 
+          delay: 3000,
           disableOnInteraction: false
         }}
         centeredSlides={true}
@@ -123,11 +123,6 @@ export default function HeroCarousel() {
                             <div className="flex flex-col items-center mt-3">
                             <p className="text-xs text-gray-500">Current Price</p>
                             <p className="text-xl font-bold text-mainColor">{nft.price} ETH</p>
-                        </div>
-
-                        <div className="flex justify-between w-full mt-3">
-                            <p className="text-xs text-gray-500">Last Sale</p>
-                            <p className="text-sm text-gray-300">{nft.lastSale || 'N/A'} ETH</p>
                         </div>
                         </div>
                     </SwiperSlide>
