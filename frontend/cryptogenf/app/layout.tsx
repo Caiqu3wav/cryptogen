@@ -3,11 +3,8 @@ import "./globals.css";
 import SessionProvider  from './providers/authProviders'
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import WagmiProviderComp from "@/lib/wagmi/wagmi-provider";
 import { headers } from "next/headers";
-import { cookieToInitialState } from "wagmi";
-import { config } from "@/lib/wagmi/config";
-
+import Web3Provider from "@/providers/Web3Provider";
 
 export const metadata: Metadata = {
   title: "CryptoGen",
@@ -20,14 +17,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
-  const initialState = cookieToInitialState(config, headers().get("cookie"));
+  const headersObj = await headers();
+  const cookies = headersObj.get("cookie");
+
   return (
     <SessionProvider session={session}>
     <html lang="en">
       <body>
-        <WagmiProviderComp initialState={initialState}>
+      <Web3Provider cookies={cookies}>
         {children}
-        </WagmiProviderComp>
+        </Web3Provider>
       </body>
     </html>
     </SessionProvider>

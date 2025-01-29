@@ -1,25 +1,18 @@
-import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 import { RiWallet3Fill } from 'react-icons/ri';
 import { useState } from 'react';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { modal } from '@/providers/Web3Provider';
 
 export default function WalletButton() {
     const { address, isConnected } = useAccount();
-    const { open } = useWeb3Modal();
     const { disconnect } = useDisconnect();
-    const { signMessageAsync } = useSignMessage();
     const [loading, setLoading] = useState(false);
 
     const handleConn = async () => {
       try {
         setLoading(true);
         if (!isConnected) {
-          await open();
-
-          if (address) {
-            await handleBackend(address);
-            console.log('Wallet connected:', address);
-          }
+           modal.open();
         } else {
           disconnect();
         }
@@ -30,41 +23,6 @@ export default function WalletButton() {
       }
     };
 
-    const handleBackend = async (walletAddress) => {
-      try {
-       const nonceRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/nonce`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json', },
-        });
-
-        const { nonce } = await nonceRes.json();
-        if (!nonce) {
-          throw new Error('Nonce not found');
-        }
-
-        const signature = await signMessageAsync({ message: nonce });
-
-        const authResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/wallet`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', },
-          body: JSON.stringify({ 
-            address: walletAddress, 
-            signature,
-            nonce,
-           }),
-       });
-
-        const result = await authResponse.json();
-
-        if (authResponse.ok) {
-          console.log('Authentication successful:', result);
-        } else {
-          console.error('Authentication failed:', result);
-        }
-      } catch (error) {
-        console.error('Error signing message:', error);
-      }
-    };
 
     return (
         <button
