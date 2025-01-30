@@ -28,8 +28,7 @@ export default function WalletButton() {
         <button
       onClick={handleConn}
       className="flex items-center text-lg justify-center gap-2 rounded-2xl bg-slate-500 hover:bg-purple-400 hover:text-white transition-colors duration-300
-       px-2 py-2"
-    >
+       px-2 py-2">
       <RiWallet3Fill />
       <p>|</p>
       {isConnected ? (

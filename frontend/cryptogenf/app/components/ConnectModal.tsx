@@ -1,58 +1,36 @@
 'use client'
 import { MdAssignment, MdOutlineMailLock } from "react-icons/md"
 import Link from "next/link"
-import { ethers } from 'ethers'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Loader } from "./Loader"
-import { signIn } from "next-auth/react"
+import { modal } from "@/providers/Web3Provider"
+import { useAccount } from 'wagmi'
 
 export default function ConnectModal() {
 const [isLoading, setIsLoading] = useState(false);
+const { address, isConnected } = useAccount();
 const [messageLogin, setMessageLogin] = useState<string | null>(null);
 const router = useRouter();
 
 const loginWithWallet = async () => {
-  try {
-    setIsLoading(true);
+         setIsLoading(true);
+         if (!isConnected) {
+            modal.open();
+         } 
+          setIsLoading(false);
+        };
+         
+         useEffect(() => {
+            if (isConnected && address) {
+          setMessageLogin("Wallet connected with success, you can configure your user account with your wallet, redirecting to home page");
 
-    if (!window.ethereum) {
-      alert("MetaMask is not installed!");
-      setIsLoading(false);
-      return;
-    }
+          setTimeout(() => {
+            router.push('/');
+          }, 3000);
+          }
+         }, [isConnected, router, address]);
 
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-
-    // Request user to connect wallet
-    const walletAddress = await signer.getAddress();
-
-    // Prompt user to sign a message
-    const message = "Sign this message to authenticate.";
-    const signature = await signer.signMessage(message);
-
-    // Authenticate via NextAuth
-    const result = await signIn("credentials", {
-      walletAddress,
-      signature,
-      redirect: false,
-    });
-
-    if (!result?.ok) {
-      setMessageLogin("Wallet login failed");
-      throw new Error("Wallet login failed");
-    }
-
-    setMessageLogin("Wallet login successful");
-    router.push("/");
-  } catch (error) {
-    console.error(error);
-    alert("Failed to connect wallet.");
-  } finally {
-    setIsLoading(false);
-  }
-};
 
   return (
     <div className="w-[50%] bg-white rounded-xl">
@@ -75,12 +53,7 @@ const loginWithWallet = async () => {
           <button className="w-full mt-3 flex items-center justify-center border border-slate-300 py-2 px-4 text-sm text-slate-600 transition-all hover:text-white hover:bg-slate-800"
            onClick={loginWithWallet} >
             <img src="https://docs.material-tailwind.com/icons/metamask.svg" alt="metamask" className="h-5 w-5 mr-2" />
-            Connect Wallet (MetaMask) {isLoading && <Loader size={20}/>}
-          </button>
-
-          <button className="w-full mt-2 flex items-center justify-center border border-slate-300 py-2 px-4 text-sm text-slate-600 transition-all hover:text-white hover:bg-slate-800">
-            <img src="https://docs.material-tailwind.com/icons/coinbase.svg" alt="coinbase" className="h-5 w-5 mr-2 rounded-md" />
-            Connect with Coinbase
+            Connect Wallet {isLoading && <Loader size={20}/>}
           </button>
         </div>
 
