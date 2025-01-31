@@ -75,14 +75,19 @@ func WalletAuth(c *gin.Context) {
 	}
 
 	if wallet.UserId == uuid.Nil {
-		var user models.User
-		if err := tx.Create(&user).Error; err != nil {
+		newUser := models.User{
+			Name:     "New User", // 🔹 Nome padrão (o usuário pode atualizar depois)
+			Email:    "",         // 🔹 Email em branco até ser preenchido
+		}
+
+	
+		if err := tx.Create(&newUser).Error; err != nil {
 			tx.Rollback()
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 			return
 		}
 
-		wallet.UserId = user.Id
+		wallet.UserId = newUser.Id
 
 		if err := tx.Save(&wallet).Error; err != nil {
 			tx.Rollback()
@@ -95,6 +100,57 @@ func WalletAuth(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"user": wallet.User, "wallet": wallet})
 }
+
+func WalletToUser(c *gin.Context) {
+	var payload struct {
+		UserId        uuid.UUID `json:"userId"`
+		WalletAddress string `json:"walletAddress"`
+		Signature     string `json:"signature"`
+		Nonce         string `json:"nonce"`
+	}
+
+	if err := c.BindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+		return
+	}
+
+	if !ValidateSignature(payload.WalletAddress, payload.Signature, payload.Nonce) {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid signature"})
+		return
+	}
+
+	db := database.DB
+	var user models.User
+
+	var wallet models.Wallet
+
+	tx := db.Begin()
+
+	  // Verify if wallet already signed
+	if err := tx.Where("wallet_address = ?", payload.WalletAddress).First(&wallet).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusConflict, gin.H{"error": "Wallet not found"})
+		return
+	
+	} else {
+		wallet = models.Wallet{
+			Address: payload.WalletAddress,
+			Nonce: payload.Nonce,
+			Signature: payload.Signature,
+			Verified: true,
+		}
+
+		if err := tx.Create(&wallet).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create wallet"})
+			return
+		}
+		}
+
+		tx.Commit()
+		c.JSON(http.StatusOK, gin.H{"message": "Wallet linked to user", "user": user, "wallet": wallet})
+	}
+
 
 func GetUserByWalletAddress(walletAddress string) *models.User {
 	var user models.User
