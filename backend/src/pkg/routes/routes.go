@@ -3,9 +3,13 @@ package routes
 import (
 	"cryptogen/src/pkg/handlers"
 	"net/http"
+	"time"
 
-	"github.com/gorilla/mux"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
+	"github.com/ulule/limiter/v3"
+	"github.com/ulule/limiter/v3/drivers/middleware/stdlib"
+	"github.com/ulule/limiter/v3/drivers/store/memory"
 )
 
 func WrapGinHandler(handler gin.HandlerFunc) http.HandlerFunc {
@@ -17,8 +21,13 @@ func WrapGinHandler(handler gin.HandlerFunc) http.HandlerFunc {
 }
 
 func RegisterRoutes(r *mux.Router) {
+
+	// Brute force protection
+	rate := limiter.Rate{Period: 60 * time.Second, Limit: 10}
+	middleware := stdlib.NewMiddleware(limiter.New(memory.NewStore(), rate))
+
 	//USERS
-	r.HandleFunc("/login", handlers.SignIn).Methods("POST").Name("login")
+	r.Handle("/login", middleware.Handler(http.HandlerFunc(handlers.SignIn))).Methods("POST").Name("login")
 
 	r.HandleFunc("/register", handlers.SignUp).Methods("POST").Name("register")
 
