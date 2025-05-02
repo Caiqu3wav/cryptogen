@@ -5,7 +5,7 @@ import { NftProps } from '../types'
 export default function NftCard({nftsData}: {nftsData: NftProps[] | null}) {
   return (
     <>
-    {nftsData?.length >= 1 ? (
+    {nftsData?.length && nftsData?.length >= 1 ? (
       nftsData.map((nft) => (
         <div
           key={nft.id}

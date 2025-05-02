@@ -43,6 +43,7 @@ type Collection struct {
 	Owner     User           `json:"owner" gorm:"foreignKey:OwnerId;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Blockchain  string         `json:"blockchain" gorm:"type:varchar(50)"`
 	OwnerId   uuid.UUID      `json:"owner_id" gorm:"type:uuid;not null"`
+	
 	NFTs        []NFT          `json:"nfts" gorm:"foreignKey:CollectionId"`
 	CreatedAt   time.Time      `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt   time.Time      `json:"updated_at" gorm:"autoUpdateTime"`
