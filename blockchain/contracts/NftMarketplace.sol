@@ -189,6 +189,6 @@ contract NftMarketplace is ERC721URIStorage {
                 currentIndex += 1;        
             }
         }
-        return items
+        return items;
     }
 }
