@@ -13,6 +13,7 @@
     "@nextui-org/input": "^2.4.8",
     "@reown/appkit": "^1.7.3",
     "@reown/appkit-adapter-wagmi": "^1.7.3",
+    "@tailwindcss/postcss": "^4.1.8",
     "@tanstack/react-query": "^5.74.7",
     "@wagmi/core": "^2.17.0",
     "@walletconnect/modal": "^2.7.0",

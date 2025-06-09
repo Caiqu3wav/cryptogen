@@ -40,10 +40,9 @@ type Collection struct {
 	ImageUrl    string         `json:"image_url" gorm:"type:varchar(255)"`
 	Tags        pq.StringArray `json:"tags" gorm:"type:text[]"`
 	Category    string         `json:"category" gorm:"type:varchar(50)"`
-	Owner     User           `json:"owner" gorm:"foreignKey:OwnerId;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Owner     User             `json:"owner" gorm:"foreignKey:OwnerId;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Blockchain  string         `json:"blockchain" gorm:"type:varchar(50)"`
-	OwnerId   uuid.UUID      `json:"owner_id" gorm:"type:uuid;not null"`
-	
+	OwnerId   uuid.UUID        `json:"owner_id" gorm:"type:uuid;not null"`
 	NFTs        []NFT          `json:"nfts" gorm:"foreignKey:CollectionId"`
 	CreatedAt   time.Time      `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt   time.Time      `json:"updated_at" gorm:"autoUpdateTime"`
@@ -83,10 +82,10 @@ type NFT struct {
 	OwnerId      uuid.UUID      `json:"owner_id"`
 	Collection   Collection     `json:"collection" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	CollectionId uuid.UUID      `json:"collection_id"`
-	ContractId uuid.UUID `json:"contract_id"`
-	Contract   SmartContract `json:"contract" gorm:"foreignKey:ContractId"`
+	ContractId uuid.UUID 		`json:"contract_id"`
+	Contract   SmartContract 	`json:"contract" gorm:"foreignKey:ContractId"`
 	Category     string         `json:"category" gorm:"type:varchar(50)"`
-	Attributes   string    `json:"attributes" gorm:"type:jsonb;default:'{}'"`
+	Attributes   string    		`json:"attributes" gorm:"type:jsonb;default:'{}'"`
 	Price        float64        `json:"price" gorm:"type:decimal(10,2)"`
 	FloorPrice   float64        `json:"floor_price" gorm:"type:decimal(10,2)"`
     Volume       float64        `json:"volume" gorm:"type:decimal(15,2)"`
