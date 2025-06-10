@@ -13,9 +13,26 @@ export interface NftProps {
     lastSale: number;
     totalSales: number;
     trends: TrendI;
-    createdAt: string; 
+    createdAt: string;
+    contract: ContractI;
     updatedAt: string; 
     forSale?: boolean; 
+    attributes?: any;
+    history?: Transaction[];
+}
+
+export interface Transaction {
+  id: string;
+  type: string;
+  timestamp: string;
+  price: number;
+  fromAddress: string;
+  toAddress: string;
+}
+
+export interface ContractI {
+    address: string;
+    network: string;
 }
 
 export interface OwnerI {
@@ -27,6 +44,7 @@ export interface OwnerI {
 export interface TrendI {
     prices: number[];
     dates: string[]; 
+    status: string;
 }
 
 export interface userDataI {

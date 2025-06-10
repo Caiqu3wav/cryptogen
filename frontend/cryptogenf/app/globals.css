@@ -1,8 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 *{
   font-family: "Kanit", sans-serif;
@@ -67,5 +63,87 @@ body {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@theme {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --radius: 0.75rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  ::selection {
+    background-color: rgba(0, 163, 255, 0.2); /* bg-cryptogen-blue/20 */
+    color: white;
+  }
+}
+
+/* === Utilitários customizados === */
+@layer utilities {
+  .glass {
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+  }
+
+  .glass-card {
+    backdrop-filter: blur(32px);
+    background-color: rgba(9, 17, 35, 0.2); /* bg-cryptogen-navy/20 */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  }
+
+  .blue-glow {
+    text-shadow: 0 0 10px rgba(0, 163, 255, 0.7);
+  }
+
+  .text-gradient {
+    background-image: linear-gradient(to right, #00a3ff, #4dbfff, #00ffe3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .btn-gradient {
+    background-image: linear-gradient(to right, #00a3ff, #00ffe3);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-gradient:hover {
+    filter: brightness(1.1);
   }
 }

@@ -1,118 +1,99 @@
 import React from 'react'
-import { nfts } from '../api/nfts'
 import { NftProps } from '../types'
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { useRouter } from 'next/navigation';
 
 export default function NftCard({ nftsData }: { nftsData: NftProps[] | null }) {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const formatPrice = (price: number) => `${price.toFixed(2)} ETH`;
 
-  const getTrendIcon = (trend: string) => {
-    switch (trend) {
-      case "up":
-        return <TrendingUp className="w-4 h-4 text-green-400" />;
-      case "down":
-        return <TrendingDown className="w-4 h-4 text-red-400" />;
-      default:
-        return <Minus className="w-4 h-4 text-gray-400" />;
-    }
+  const getTrendIcon = (prices: number[]) => {
+    if (!prices || prices.length < 2) return <Minus className="w-4 h-4 text-gray-400" />;
+    const diff = prices[prices.length - 1] - prices[0];
+    if (diff > 0) return <TrendingUp className="w-4 h-4 text-green-400" />;
+    if (diff < 0) return <TrendingDown className="w-4 h-4 text-red-400" />;
+    return <Minus className="w-4 h-4 text-gray-400" />;
   };
 
   const handleViewNFT = (id: string) => {
-    navigate(`/nft/${id}`);
+    router.push(`/nft/${id}`);
   };
 
   return (
-    <>
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {nftsData?.length ? (
         nftsData.map((nft) => (
-          <Card
+          <div
             key={nft.id}
-            className="glass-card overflow-hidden group transition-all duration-300 hover:translate-y-[-5px]"
+            className="rounded-2xl shadow-lg bg-gradient-to-b from-[#0f1117] to-[#1c1e26] border border-white/10 overflow-hidden transition-transform hover:-translate-y-1 cursor-pointer"
+            onClick={() => handleViewNFT(nft.id)}
           >
             <div className="relative aspect-square overflow-hidden">
               <img
                 src={nft.imageUrl}
                 alt={nft.name}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
               />
-              <div className="absolute top-3 left-3">
-                <span className="bg-cryptogen-blue/80 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
-                  {nft.category}
-                </span>
+              <div className="absolute top-2 left-2 bg-cryptogen-blue/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
+                {nft.category}
               </div>
-              <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 rounded-full px-2 py-1 backdrop-blur-sm">
-                {getTrendIcon(nft.trends)}
+              <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/60 px-2 py-1 rounded-full backdrop-blur-sm">
+                {getTrendIcon(nft.trends.prices)}
                 <span className="text-white text-xs">{nft.totalSales}</span>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-cryptogen-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center p-4">
-                <Button
-                  onClick={() => handleViewNFT(nft.id)}
-                  className="bg-cryptogen-blue hover:bg-cryptogen-lightblue text-white py-2 px-4 rounded-full text-sm font-medium transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2"
-                >
-                  <Eye className="w-4 h-4" />
-                  Ver detalhes
-                </Button>
-              </div>
             </div>
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-bold text-white text-lg truncate">{nft.name}</h3>
-                <span className="text-cryptogen-blue text-sm">#{nft.id.slice(0, 8)}</span>
+
+            <div className="p-4 space-y-2">
+              <div className="flex justify-between items-center">
+                <h3 className="text-white font-semibold text-lg truncate">{nft.name}</h3>
+                <span className="text-sm text-cryptogen-lightblue">#{nft.id.slice(0, 8)}</span>
               </div>
 
-              <div className="flex items-center gap-2 mb-2">
-                <img
-                  src={nft.owner.avatar}
-                  alt={nft.owner.name}
-                  className="w-6 h-6 rounded-full"
-                />
-                <p className="text-sm text-white/60">Por {nft.owner.name}</p>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-white text-sm">
+                  {nft.owner.name.charAt(0).toUpperCase()}
+                </div>
+                <p className="text-sm text-white/70">Por {nft.owner.name}</p>
               </div>
 
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-white/60 text-xs">Coleção</span>
-                <span className="text-cryptogen-lightblue text-xs font-medium">
-                  {nft.collection.name}
-                </span>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-white/60">Coleção:</span>
+                <span className="text-xs font-medium text-white">{nft.collection.name}</span>
               </div>
 
-              <div className="flex justify-between items-center mb-3">
+              <div className="flex justify-between gap-4 mt-1">
                 <div>
-                  <span className="text-cryptogen-blue font-bold text-lg">
-                    {formatPrice(nft.price)}
-                  </span>
-                  <p className="text-white/60 text-xs">Preço atual</p>
+                  <p className="text-sm text-cryptogen-blue font-semibold">{formatPrice(nft.price)}</p>
+                  <p className="text-xs text-white/50">Preço Atual</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-white/80 text-sm">
-                    {formatPrice(nft.lastSale)}
-                  </span>
-                  <p className="text-white/60 text-xs">Última venda</p>
+                  <p className="text-sm text-white">{formatPrice(nft.lastSale)}</p>
+                  <p className="text-xs text-white/50">Última Venda</p>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-1 mb-3">
-                {nft.tags.slice(0, 3).map((tag, index) => (
+              <div className="flex flex-wrap gap-1">
+                {nft.tags.slice(0, 3).map((tag, idx) => (
                   <span
-                    key={index}
-                    className="bg-cryptogen-navy/30 text-cryptogen-lightblue text-xs px-2 py-1 rounded"
+                    key={idx}
+                    className="bg-white/10 text-white/70 text-xs px-2 py-1 rounded-full"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <div className="flex justify-between text-xs text-white/60">
+              <div className="flex justify-between text-xs text-white/50 pt-2 border-t border-white/10 mt-2">
                 <span>Volume: {formatPrice(nft.volume)}</span>
                 <span>Floor: {formatPrice(nft.floorPrice)}</span>
               </div>
             </div>
-          </Card>
+          </div>
         ))
       ) : (
-        <p className="text-white text-sm">Nenhum NFT encontrado.</p>
+        <p className="text-white">Nenhum NFT encontrado.</p>
       )}
-    </>
+    </div>
   );
 }

@@ -55,79 +55,73 @@ export default function HeroCarousel() {
   }, []);
 
   return (
-    <div className="flex w-full h-fit min-h-52 items-center justify-center">
-     <Swiper modules={[Navigation, Pagination, Autoplay]}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false
-        }}
+    <div className="flex w-full h-fit min-h-52 items-center justify-center px-4">
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
         centeredSlides={true}
         slidesPerView={slidesPerView}
         spaceBetween={spaceBetween}
         navigation
-        pagination={{ clickable: true, bulletClass: 'swiper-pagination-bullet' }} className='flex w-full h-full'>
-            {nfts && nfts.length > 0 ? (
-                nfts.map((nft) => (
-                    <SwiperSlide className="min-h-fit py-8" key={nft.id}>
-                         <a 
-                        href={`/nft/${nft.id}`} 
-                        className="flex flex-col items-center gap-4 justify-center h-fit text-white bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+        pagination={{ clickable: true }}
+        className="w-full"
+      >
+        {nftsVar?.map((nft) => (
+          <SwiperSlide className="py-8" key={nft.id}>
+            <a
+              href={`/nft/${nft.id}`}
+              className="group flex flex-col items-center gap-4 bg-[#1a1a1a] p-6 rounded-2xl shadow-xl transition-transform duration-300 hover:scale-[1.03] hover:shadow-2xl border border-[#2a2a2a]"
+            >
+              <img
+                src={nft.imageUrl}
+                alt={nft.name}
+                className="w-[220px] h-[220px] rounded-xl object-cover border border-[#333]"
+              />
+
+              <div className="flex flex-col w-full gap-1">
+                <h3 className="text-xl font-semibold text-white truncate">{nft.name}</h3>
+                <p className="text-sm text-gray-400 line-clamp-2">{nft.description}</p>
+              </div>
+
+              <div className="w-full mt-2 flex flex-col gap-2">
+                <div className="flex justify-between text-sm text-gray-400">
+                  <span>Preço atual:</span>
+                  <span className="text-mainColor font-semibold">{nft.price} ETH</span>
+                </div>
+                <div className="flex justify-between text-sm text-gray-400">
+                  <span>Última venda:</span>
+                  <span>{nft.lastSale || 'N/A'} ETH</span>
+                </div>
+                <div className="flex justify-between text-sm text-gray-400">
+                  <span>Floor price:</span>
+                  <span>{nft.floorPrice} ETH</span>
+                </div>
+              </div>
+
+              <div className="w-full mt-3 text-xs text-gray-400">
+                <p>
+                  Coleção: <span className="text-white font-medium">{nft.collection.name}</span>
+                </p>
+                <p>
+                  Dono: <span className="text-white">{nft.owner.name}</span>
+                </p>
+              </div>
+
+              {nft.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3 w-full">
+                  {nft.tags.map((tag, i) => (
+                    <span
+                      key={i}
+                      className="bg-[#2c2c2c] text-gray-300 text-xs px-3 py-1 rounded-full"
                     >
-                        <img 
-                            src={nft.imageUrl} 
-                            alt={nft.name} 
-                            className="w-[200px] h-[200px] object-cover rounded-lg border border-gray-700"
-                        />
-                        
-                        <h3 className="text-lg font-semibold text-center">{nft.name}</h3>
-                        
-                        <div className="flex flex-col items-center mt-3">
-                            <p className="text-xs text-gray-500">Price</p>
-                            <p className="text-xl font-bold text-mainColor">{nft.price} ETH</p>
-                        </div>
-                        
-                        <div className="flex justify-between w-full mt-3">
-                            <p className="text-xs text-gray-500">Last Sale</p>
-                            <p className="text-sm text-gray-300">{nft.lastSale || 'N/A'} ETH</p>
-                        </div>
-                        
-                        {nft.tags && nft.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-3">
-                                {nft.tags.map((tag, index) => (
-                                    <span 
-                                        key={index} 
-                                        className="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded-lg"
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                    </a>
-                    </SwiperSlide>
-                ))
-            ) : (
-                nftsVar?.map((nft) => (
-                    <SwiperSlide className="min-h-fit py-8" key={nft.id}>
-                        <div className="flex flex-col items-center gap-4 justify-center h-fit text-white bg-gray-800 p-4 rounded-lg shadow-md">
-                            <img 
-                                src={nft.image}
-                                alt={nft.name}
-                                className="w-[200px] h-[200px] object-cover rounded-lg border border-gray-700"
-                            />
-                            
-                            <h3 className="text-lg font-semibold">{nft.name}</h3>
-                            
-                            <p className="text-sm text-gray-400 text-center">{nft.description}</p>
-                            
-                            <div className="flex flex-col items-center mt-3">
-                            <p className="text-xs text-gray-500">Current Price</p>
-                            <p className="text-xl font-bold text-mainColor">{nft.price} ETH</p>
-                        </div>
-                        </div>
-                    </SwiperSlide>
-                ))
-            )}
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </a>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
 )

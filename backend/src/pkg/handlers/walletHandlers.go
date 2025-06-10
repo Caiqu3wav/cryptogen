@@ -9,7 +9,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/gin-gonic/gin"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 )
 
 func GetNonce(c *gin.Context) {
@@ -185,16 +184,10 @@ func ValidateSignature(walletAddress string, signature string, nonce string) boo
 	hash := crypto.Keccak256Hash([]byte("\x19Ethereum Signed Message:\n" + string(len(message)) + string(message)))
 
 	//brings the public key of the wallet
-	publicKeyBytes, err := secp256k1.RecoverPubkey(hash.Bytes(), sigBytes)
+	publicKey, err := crypto.SigToPub(hash.Bytes(), sigBytes)
 	if err != nil {
 		return false
-	}
-
-	//convert the public key bytes to an ECDSA public key
-	publicKey, err := crypto.UnmarshalPubkey(publicKeyBytes)
-	if err != nil {
-		return false
-	}
+	} 
 
 	//convert the wallet public key to an Ethereum address
 	recoveredAddress := crypto.PubkeyToAddress(*publicKey).Hex()
