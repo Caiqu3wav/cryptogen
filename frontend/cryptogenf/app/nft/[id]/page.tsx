@@ -8,7 +8,7 @@ import Footer from '@/app/components/sections/Footer';
 import { Card } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
 import { useState, useEffect } from 'react';
-import type { NftProps, TrendI } from '@/app/types'; // ajuste para onde está sua tipagem
+import type { NftProps, TrendI } from '@/app/types'; 
 
 export default function NFTDetail() {
   const { id } = useParams<{ id: string }>();
@@ -160,7 +160,7 @@ export default function NFTDetail() {
                 </div>
                 <div className="text-right">
                   <p className="text-white/60 text-sm">Última Venda</p>
-                  <p className="text-white text-xl font-semibold">{formatPrice(nft.lastSale)}</p>
+                  <p className="text-white text-xl font-semibold">{formatPrice(nft.lastSale?)}</p>
                 </div>
               </div>
               
@@ -208,13 +208,13 @@ export default function NFTDetail() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-white/60">Rede:</span>
-                  <span className="text-white">{nft.contract.network}</span>
+                  <span className="text-white">{nft.contract?.network}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-white/60">Endereço:</span>
                   <div className="flex items-center gap-2">
                     <span className="text-white font-mono text-sm">
-                      {nft.contract.address.slice(0, 6)}...{nft.contract.address.slice(-4)}
+                      {nft.contract?.address.slice(0, 6)}...{nft.contract?.address.slice(-4)}
                     </span>
                     <Button variant="ghost" size="sm" className="p-1 h-auto">
                       <ExternalLink className="w-3 h-3" />

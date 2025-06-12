@@ -40,7 +40,6 @@ const config: Config = {
         'midthree': {'max': '600px'},
         'midfour': {'max': '452px'},
         'midfour1': {'max': '420px'},
-        'low': {'max': '400px'},
         'lowone': {'max': '382px'},
         'lowtwo': {'max': '370px'},
         'lowtwo1': {'max': '348px'},

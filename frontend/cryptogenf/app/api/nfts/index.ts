@@ -2,6 +2,39 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 export const nfts = [
   {
+    id: "0",
+    name: "Galaxy Tiger",
+    description: "Um tigre cósmico brilhando nas galáxias distantes.",
+    imageUrl: "https://example.com/nfts/galaxy-tiger.png",
+    price: 2.5,
+    tags: ["galaxy", "tiger", "rare"],
+    category: "arte",
+    owner: {
+      id: "user_1",
+      name: "AstralArtist",
+      avatar: "https://example.com/avatars/astralartist.png",
+    },
+    collection: {
+      id: "collection_1",
+      name: "Galactic Beasts",
+      logoUrl: "https://example.com/collections/galactic-beasts-logo.png",
+      description: "Criaturas lendárias das profundezas do cosmos.",
+      image_url: "https://example.com/collections/galactic-beasts-banner.png",
+      tags: ["space", "creatures", "digital"],
+      owner: {
+        id: "user_1",
+        name: "AstralArtist",
+        avatar: "https://example.com/avatars/astralartist.png",
+      },
+    },
+    createdAt: "2024-11-01T12:00:00.000Z",
+    updatedAt: "2025-06-01T08:00:00.000Z",
+    volume: 45.3,
+    floorPrice: 1.8,
+    totalListed: 3,
+    forSale: true,
+  },
+  {
     id: "1",
     name: "Solar",
     description: "sol e lua",
@@ -30,7 +63,8 @@ export const nfts = [
     },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    forSale: true
+    forSale: true,
+    lastSale: 1
   },
   {
     id: "2",
@@ -47,7 +81,7 @@ export const nfts = [
     },
     collection: {
       id: "collection2",
-      name: "Shadow Realm",
+      name: /"Shadow Realm",
       logoUrl: "/logos/shadow.png"
     },
     floorPrice: 7,

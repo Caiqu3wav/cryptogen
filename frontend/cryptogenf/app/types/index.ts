@@ -10,12 +10,12 @@ export interface NftProps {
     collection: CollectionI; 
     floorPrice: number;
     volume: number;
-    lastSale: number;
+    lastSale?: number;
     totalSales: number;
     trends: TrendI;
-    drop: Drop;
+    drop?: Drop;
     createdAt: string;
-    contract: ContractI;
+    contract?: ContractI;
     updatedAt: string; 
     attributes?: any;
     history?: Transaction[];
