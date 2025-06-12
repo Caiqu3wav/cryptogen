@@ -9,6 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       screens:{
+      low: '440px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
         'major': {'max': '1260px'},
         'major1': {'max': '1240px'},
         'majortwo': {'max': '1235px'},
@@ -49,7 +55,7 @@ const config: Config = {
         mainSecondColor: "#000",
         tertiaryColor: "#9333ea",
       },
-    },
+    }, 
   },
   plugins: [],
 };

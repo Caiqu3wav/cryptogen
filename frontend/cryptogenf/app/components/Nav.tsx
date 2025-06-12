@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, {useState, useEffect} from 'react'
-import SearchInput from '../ui/SearchInput.jsx';
+import React, {useState, useEffect} from 'react';
+import SearchInput from './ui/SearchInput';
 import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
@@ -60,14 +60,14 @@ export default function Nav() {
     <>
     <nav className='flex flex-col gap-2 items-center'>
       <SearchInput/>
-      <ul className='flex gap-6 items-center text-rose-300 majorfour2:hidden'>
+      <ul className='sm:flex gap-6 items-center text-rose-300 hidden'>
         <li><Link href={'/marketplace'}>Explore</Link></li>
         <li><Link href={'/about'}>About</Link></li>
         <li><Link href={'/marketplace'}>MarketPlace</Link></li>
         <li><Link href={'/collections'}>Collections</Link></li>
         <li><Link href={'/artists'}>Artists</Link></li>
       </ul>
-      <button aria-label="Open Menu" onClick={toggleMenu} className="btn-hamburguer hidden majorfour2:flex">
+      <button aria-label="Open Menu" onClick={toggleMenu} className="btn-hamburguer flex sm:hidden">
           <GiHamburgerMenu size={45} className="text-white" />
         </button>
     </nav>

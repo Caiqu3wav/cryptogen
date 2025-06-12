@@ -16,16 +16,16 @@ const {data: session} = useSession();
   const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   return (
-    <header className='flex fixed top-0 z-50 justify-between items-center
+    <header className='flex fixed gap-3 low:gap-0 top-0 z-50 justify-between items-center
      bg-gradient-to-b from-blue-300 to-transparent h-32 px-3 w-full'>
-      <Link href="/" className='flex items-center border-solid border-r-2 rounded-3xl border-white pr-6 h-full'>
-      <Image src={cyberGenLogo} className="w-20 midtwo2:w-14 rounded-full"  alt="logo" />
+      <Link href="/" className='flex items-center border-solid border-r-2 rounded-3xl border-white pr-3 sm:pr-6 h-full'>
+      <Image src={cyberGenLogo} className="w-12 sm:w-20 rounded-full"  alt="logo" />
       </Link>
       <Nav/>
       <div className='w-fit'>
       {!session ? (
         <>
-        <Link href={'/auth'} className='w-[100px] flex items-center justify-around h-8 
+        <Link href={'/auth'} className='w-[78px] sm:w-[100px] flex items-center justify-around h-8 
       rounded-lg bg-gradient-to-br from-purple-600 to-black text-white'>
         <p>Login</p> 
       <IoAccessibility size={20}/>

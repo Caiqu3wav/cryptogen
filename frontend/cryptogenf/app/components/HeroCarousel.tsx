@@ -70,14 +70,13 @@ export default function HeroCarousel() {
           <SwiperSlide className="py-8" key={nft.id}>
             <a
               href={`/nft/${nft.id}`}
-              className="group flex flex-col items-center gap-4 bg-[#1a1a1a] p-6 rounded-2xl shadow-xl transition-transform duration-300 hover:scale-[1.03] hover:shadow-2xl border border-[#2a2a2a]"
+              className="group flex flex-col items-center gap-4 bg-[#1a1a1a] p-2 md:p-4 rounded-2xl shadow-xl transition-transform duration-300 hover:scale-[1.03] hover:shadow-2xl border border-[#2a2a2a]"
             >
               <img
                 src={nft.imageUrl}
                 alt={nft.name}
-                className="w-[220px] h-[220px] rounded-xl object-cover border border-[#333]"
+                className="w-full h-[180px] md:h-[210px] rounded-xl object-cover border border-[#333]"
               />
-
               <div className="flex flex-col w-full gap-1">
                 <h3 className="text-xl font-semibold text-white truncate">{nft.name}</h3>
                 <p className="text-sm text-gray-400 line-clamp-2">{nft.description}</p>

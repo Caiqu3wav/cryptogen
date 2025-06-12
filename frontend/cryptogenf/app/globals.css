@@ -4,12 +4,17 @@
   font-family: "Kanit", sans-serif;
   font-weight: 500;
   font-style: normal;
+  border-color: hsl(var(--border));
 }
 
 body {
   padding-top: 128px;
   background-color: black;
 }
+
+html {
+    scroll-behavior: smooth;
+  }
 
 .hero-sec{
   background-image: url(/assets/particlesblue.gif);
@@ -89,30 +94,11 @@ body {
     --radius: 0.75rem;
 }
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    -webkit-font-smoothing: antialiased;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
-  }
-
-  * {
-    border-color: hsl(var(--border));
-  }
-
   ::selection {
     background-color: rgba(0, 163, 255, 0.2); /* bg-cryptogen-blue/20 */
     color: white;
   }
-}
 
-/* === Utilitários customizados === */
-@layer utilities {
   .glass {
     backdrop-filter: blur(20px);
     background-color: rgba(255, 255, 255, 0.05);
@@ -146,4 +132,3 @@ body {
   .btn-gradient:hover {
     filter: brightness(1.1);
   }
-}

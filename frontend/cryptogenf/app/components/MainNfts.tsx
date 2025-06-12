@@ -13,6 +13,7 @@ export default function MainNfts() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/nft`);
         const data = await response.json();
         setNftData(data);
+        console.log(data);
       } catch (error) {
         console.error('Error fetching NFTs:', error);
       } finally {

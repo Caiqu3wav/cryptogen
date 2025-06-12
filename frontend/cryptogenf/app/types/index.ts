@@ -13,12 +13,29 @@ export interface NftProps {
     lastSale: number;
     totalSales: number;
     trends: TrendI;
+    drop: Drop;
     createdAt: string;
     contract: ContractI;
     updatedAt: string; 
-    forSale?: boolean; 
     attributes?: any;
     history?: Transaction[];
+}
+
+export interface Drop {
+    id: string;
+    name: string;
+    description: string;
+    collection: CollectionI;
+    collection_id: string;
+    image_url: string;
+    tags: string[];
+    owner: OwnerI;
+    dropDate: Date;
+    price: number;
+    totalSupply: number;
+    blockchain: BlockchainType;
+    nfts?: NftProps[];
+    createdAt: Date;
 }
 
 export interface Transaction {

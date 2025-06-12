@@ -3,7 +3,7 @@ import { NftProps } from '../types'
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
-export default function NftCard({ nftsData }: { nftsData: NftProps[] | null }) {
+export default function NftCard({ nftsData }: { nftsData: NftProps[] }) {
   const router = useRouter();
 
   const formatPrice = (price: number) => `${price.toFixed(2)} ETH`;
@@ -22,7 +22,7 @@ export default function NftCard({ nftsData }: { nftsData: NftProps[] | null }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      {nftsData?.length ? (
+      {nftsData.length > 1 ? (
         nftsData.map((nft) => (
           <div
             key={nft.id}
