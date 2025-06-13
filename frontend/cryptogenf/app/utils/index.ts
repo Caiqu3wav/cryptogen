@@ -18,22 +18,17 @@ export const blockchainsOptions = [
 
 
 export const getNFTById = async (id: string): Promise<NftProps> => {
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/nft/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/nft/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-        if (!response.ok) {
-            throw new Error('API response not OK');
-        }
+  if (!response.ok) {
+    throw new Error('API response not OK');
+  }
 
-        const data: NftProps = await response.json();
-        return data;
-    } catch (error) {
-        console.error(`Erro ao buscar NFT com id ${id}:`, error);
-        return nfts[0];
-    }
+  const data: NftProps = await response.json();
+  return data;
 };

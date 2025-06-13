@@ -1,39 +1,33 @@
+import { NftProps } from '@/app/types';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-export const nfts = [
-  {
-    id: "0",
-    name: "Galaxy Tiger",
-    description: "Um tigre cósmico brilhando nas galáxias distantes.",
-    imageUrl: "https://example.com/nfts/galaxy-tiger.png",
-    price: 2.5,
-    tags: ["galaxy", "tiger", "rare"],
-    category: "arte",
+export const nftExample: NftProps = {
+id: "1",
+    name: "Solar",
+    description: "sol e lua",
+    imageUrl: '/assets/nftimgs/ancient.jpg',
+    price: 9,
+    tags: ['celestial', 'solar'],
+    category: 'Fantasy',
     owner: {
-      id: "user_1",
-      name: "AstralArtist",
-      avatar: "https://example.com/avatars/astralartist.png",
+      id: "owner1",
+      name: "Owner One",
+      profilePic: "/avatars/avatar1.png"
+    }, 
+    floorPrice: 8,
+    volume: 100,
+    lastSale: 8.5,
+    totalSales: 15,
+    trends: {
+      prices: [7.2, 7.5, 7.9, 8, 8.2, 8.3, 8.5],
+      dates: ['2023-06-01', '2023-06-02', '2023-06-03', '2023-06-04', '2023-06-05', '2023-06-06', '2023-06-07'],
+      status: 'up'
     },
-    collection: {
-      id: "collection_1",
-      name: "Galactic Beasts",
-      logoUrl: "https://example.com/collections/galactic-beasts-logo.png",
-      description: "Criaturas lendárias das profundezas do cosmos.",
-      image_url: "https://example.com/collections/galactic-beasts-banner.png",
-      tags: ["space", "creatures", "digital"],
-      owner: {
-        id: "user_1",
-        name: "AstralArtist",
-        avatar: "https://example.com/avatars/astralartist.png",
-      },
-    },
-    createdAt: "2024-11-01T12:00:00.000Z",
-    updatedAt: "2025-06-01T08:00:00.000Z",
-    volume: 45.3,
-    floorPrice: 1.8,
-    totalListed: 3,
-    forSale: true,
-  },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+}
+
+export const nfts: NftProps[] = [
   {
     id: "1",
     name: "Solar",
@@ -45,26 +39,29 @@ export const nfts = [
     owner: {
       id: "owner1",
       name: "Owner One",
-      avatar: "/avatars/avatar1.png"
     },
     collection: {
       id: "collection1",
       name: "Galactic Set",
-      logoUrl: "/logos/galactic.png"
+      description: "Uma coleção de astros e corpos celestes.",
+      image_url: "/images/collections/galactic.jpg",
+      tags: ['space', 'galaxy'],
+      owner: {
+        id: "owner1",
+        name: "Owner One",
+      },
     },
     floorPrice: 8,
     volume: 100,
     lastSale: 8.5,
     totalSales: 15,
     trends: {
-      week: [7.2, 7.5, 7.9, 8, 8.2, 8.3, 8.5],
-      month: [],
-      change: 2.3
+      prices: [7.2, 7.5, 7.9, 8, 8.2, 8.3, 8.5],
+      dates: [],
+      status: 'up'
     },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    forSale: true,
-    lastSale: 1
   },
   {
     id: "2",
@@ -77,25 +74,29 @@ export const nfts = [
     owner: {
       id: "owner2",
       name: "Owner Two",
-      avatar: "/avatars/avatar2.png"
     },
     collection: {
       id: "collection2",
-      name: /"Shadow Realm",
-      logoUrl: "/logos/shadow.png"
+      name: "Shadow Realm",
+      description: "Reino das sombras e mistérios obscuros.",
+      image_url: "/images/collections/shadow.jpg",
+      tags: ['dark', 'mystery'],
+      owner: {
+        id: "owner2",
+        name: "Owner Two",
+      },
     },
     floorPrice: 7,
     volume: 85,
     lastSale: 8.1,
     totalSales: 20,
     trends: {
-      week: [6.5, 7, 7.2, 7.8, 8, 8.1, 8.1],
-      month: [],
-      change: 1.8
+      prices: [6.5, 7, 7.2, 7.8, 8, 8.1, 8.1],
+      dates: [],
+      status: 'stable'
     },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    forSale: true
   },
   {
     id: "3",
@@ -108,25 +109,29 @@ export const nfts = [
     owner: {
       id: "owner3",
       name: "Owner Three",
-      avatar: "/avatars/avatar3.png"
     },
     collection: {
       id: "collection3",
       name: "Neon Futures",
-      logoUrl: "/logos/neon.png"
+      description: "Visões urbanas do futuro brilhante.",
+      image_url: "/images/collections/neon.jpg",
+      tags: ['urban', 'futuristic'],
+      owner: {
+        id: "owner3",
+        name: "Owner Three",
+      },
     },
     floorPrice: 6.8,
     volume: 90,
     lastSale: 7.5,
     totalSales: 12,
     trends: {
-      week: [6.8, 7, 7.1, 7.3, 7.5, 7.5, 7.5],
-      month: [],
-      change: 0.9
+      prices: [6.8, 7, 7.1, 7.3, 7.5, 7.5, 7.5],
+      dates: [],
+      status: 'stable'
     },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    forSale: true
   },
   {
     id: "4",
@@ -139,25 +144,29 @@ export const nfts = [
     owner: {
       id: "owner4",
       name: "Owner Four",
-      avatar: "/avatars/avatar4.png"
     },
     collection: {
       id: "collection4",
       name: "Mind Layers",
-      logoUrl: "/logos/layers.png"
+      description: "Camadas mentais do inconsciente.",
+      image_url: "/images/collections/layers.jpg",
+      tags: ['mind', 'layers'],
+      owner: {
+        id: "owner4",
+        name: "Owner Four",
+      },
     },
     floorPrice: 7.9,
     volume: 102,
     lastSale: 8.4,
     totalSales: 18,
     trends: {
-      week: [7.8, 7.9, 8, 8.1, 8.2, 8.3, 8.4],
-      month: [],
-      change: 1.2
+      prices: [7.8, 7.9, 8, 8.1, 8.2, 8.3, 8.4],
+      dates: [],
+      status: 'up'
     },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    forSale: true
   },
   {
     id: "5",
@@ -170,28 +179,31 @@ export const nfts = [
     owner: {
       id: "owner5",
       name: "Owner Five",
-      avatar: "/avatars/avatar5.png"
     },
     collection: {
       id: "collection5",
       name: "Codecore",
-      logoUrl: "/logos/codecore.png"
+      description: "O núcleo do código e abstrações digitais.",
+      image_url: "/images/collections/codecore.jpg",
+      tags: ['code', 'tech'],
+      owner: {
+        id: "owner5",
+        name: "Owner Five",
+      },
     },
     floorPrice: 0.4,
     volume: 10,
     lastSale: 0.45,
     totalSales: 3,
     trends: {
-      week: [0.4, 0.42, 0.43, 0.45, 0.45, 0.45, 0.45],
-      month: [],
-      change: 0.05
+      prices: [0.4, 0.42, 0.43, 0.45, 0.45, 0.45, 0.45],
+      dates: [],
+      status: 'up'
     },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    forSale: true
   }
 ];
-
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {

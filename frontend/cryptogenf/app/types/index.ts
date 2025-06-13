@@ -7,7 +7,7 @@ export interface NftProps {
     tags: string[];
     category: string;
     owner: OwnerI;
-    collection: CollectionI; 
+    collection?: CollectionI; 
     floorPrice: number;
     volume: number;
     lastSale?: number;

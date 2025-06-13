@@ -2,6 +2,7 @@
 import React from 'react';
 import {useRouter, useParams} from 'next/navigation'
 import { ArrowLeft, ExternalLink, Heart, Share2, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { getNFTById } from '@/app/utils/index';
 import Navbar from '@/app/components/sections/Header';
 import Footer from '@/app/components/sections/Footer';
 import { Card } from '@/app/components/ui/card';
@@ -13,8 +14,38 @@ import { nfts } from '@/app/api/nfts';
 export default function NFTDetail() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const [nft, setNft] = useState<NftProps | null>(nfts[0]);
-  const [loading, setLoading] = useState(false);
+  const [nft, setNft] = useState<NftProps | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchNFT() {
+      if (!id) return;
+
+      try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/nft/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await res.json().catch(() => null);
+        if (data) {
+          setNft(data);
+        } else {
+          console.warn("JSON inválido. Usando NFT local.");
+          setNft(nfts[0]);
+        }
+    } catch (err) {
+      console.error("Erro na requisição:", err);
+      setNft(nfts[0]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  fetchNFT();
+  }, [id]);
 
   if (loading) {
     return (
@@ -51,6 +82,7 @@ export default function NFTDetail() {
     }
   };
 
+  const attributes = JSON.parse(nft.attributes);
 
   return (
     <div className="min-h-screen bg-cryptogen-black text-white">
@@ -169,7 +201,19 @@ export default function NFTDetail() {
                 ))}
               </div>
             </div>
- 
+
+            {/* Attributes */}
+            <Card className="glass-card p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Atributos</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {attributes.map((attr: any, index: number) => (
+                  <div key={index} className="bg-cryptogen-navy/20 rounded-lg p-3 text-center">
+                    <p className="text-cryptogen-lightblue text-sm font-medium">{attr.trait_type}</p>
+                    <p className="text-white font-semibold">{attr.value}</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
 
             {/* Contract Info */}
             <Card className="glass-card p-6">
