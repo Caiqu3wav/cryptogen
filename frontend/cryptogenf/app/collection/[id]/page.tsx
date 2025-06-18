@@ -1,14 +1,13 @@
 import Header from '@/app/components/sections/Header'
-import { Button } from '@/app/components/ui/button';
 import { Card } from '@/app/components/ui/card';
 import { ArrowLeft, Calendar, User, Layers, Globe, Tag } from 'lucide-react';
 import getCollectionById from '@/data/mockCollections';
 import Footer from '@/app/components/sections/Footer';
 import Link from 'next/link';
 
-export default function CollectionDetail({ params }: { params: { id: string } }) {
+export default async function CollectionDetail({ params }: { params: { id: string } }) {
   
-  const collection = params.id ? getCollectionById(params.id) : null;
+  const collection = params.id ? await getCollectionById(params.id) : null;
 
   if (!collection) {
     return (
@@ -89,7 +88,7 @@ export default function CollectionDetail({ params }: { params: { id: string } })
                     </div>
                     <div className="flex items-center gap-2">
                       <img 
-                        src={collection.owner.avatar} 
+                        src={collection.owner.profilePic} 
                         alt={collection.owner.name}
                         className="w-6 h-6 rounded-full"
                       />
@@ -102,7 +101,7 @@ export default function CollectionDetail({ params }: { params: { id: string } })
                       <Globe className="w-4 h-4" />
                       <span className="text-sm">Blockchain</span>
                     </div>
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-sm border ${getBlockchainColor(collection.blockchain)}`}>
+                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-sm border`}>
                       {collection.blockchain}
                     </span>
                   </div>
@@ -111,7 +110,7 @@ export default function CollectionDetail({ params }: { params: { id: string } })
               
               <div className="relative">
                 <img
-                  src={collection.imageUrl}
+                  src={collection.image_url}
                   alt={collection.name}
                   className="w-full rounded-2xl shadow-2xl"
                 />
@@ -133,7 +132,7 @@ export default function CollectionDetail({ params }: { params: { id: string } })
                 <div className="flex items-center justify-center mb-2">
                   <Layers className="w-6 h-6 text-cryptogen-blue" />
                 </div>
-                <div className="text-2xl font-bold text-white mb-1">{collection.nfts.length}</div>
+                <div className="text-2xl font-bold text-white mb-1">{collection.nfts?.length}</div>
                 <div className="text-white/60 text-sm">Total de NFTs</div>
               </Card>
               
@@ -149,7 +148,7 @@ export default function CollectionDetail({ params }: { params: { id: string } })
                 <div className="flex items-center justify-center mb-2">
                   <Calendar className="w-6 h-6 text-cryptogen-blue" />
                 </div>
-                <div className="text-lg font-bold text-white mb-1">{formatDate(collection.createdAt)}</div>
+                <div className="text-lg font-bold text-white mb-1">{formatDate(collection.created_at)}</div>
                 <div className="text-white/60 text-sm">Data de Criação</div>
               </Card>
               
@@ -169,7 +168,7 @@ export default function CollectionDetail({ params }: { params: { id: string } })
           <div className="container mx-auto px-4 lg:px-8">
             <h2 className="text-3xl font-bold text-white mb-8">NFTs desta Coleção</h2>
             
-            {collection.nfts.length === 0 ? (
+            {collection.nfts?.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-cryptogen-blue text-6xl mb-4">🎨</div>
                 <h3 className="text-xl font-bold text-white mb-2">Nenhum NFT encontrado</h3>

@@ -86,11 +86,16 @@ export interface OwnerI {
 export interface CollectionI {
     id: string,
     name: string,
+    symbol: string;
     description: string,
     image_url: string,
     tags: string[],
     owner: OwnerI,
+    blockchain: string,
+    category: string,
     nfts?: NftProps[];
+    created_at: string,
+    updated_at: string,
 }
 
 
