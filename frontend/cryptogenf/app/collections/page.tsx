@@ -6,11 +6,9 @@ import { Button } from '@/app/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { 
   TrendingUp, 
-  TrendingDown, 
   Eye, 
   Calendar, 
   Layers, 
-  Globe,
   Filter,
   Search,
   ArrowUpRight,
@@ -20,18 +18,16 @@ import {
   BarChart3,
   Star,
   Zap,
-  Fire,
-  Clock,
-  SortAsc,
-  SortDesc,
+  Clock, 
   Grid3X3,
   List
 } from 'lucide-react';
+import { MdLocalFireDepartment } from "react-icons/md";
 import { mockCollections } from '@/data/mockCollections';
-import { CollectionI } from '@/types/collection';
+import { CollectionI, NftProps } from '@/app/types/index';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Header from '@/app/components/sections/Header';
+import Footer from '@/app/components/sections/Footer';
 
 const CollectionCard = ({ collection, viewMode = 'grid' }: { collection: CollectionI, viewMode?: 'grid' | 'list' }) => {
   const navigate = useNavigate();
@@ -54,7 +50,7 @@ const CollectionCard = ({ collection, viewMode = 'grid' }: { collection: Collect
     navigate(`/collection/${collection.id}`);
   };
 
-  const totalVolume = collection.nfts?.reduce((acc, nft) => acc + (nft.price || 0), 0) || 0;
+  const totalVolume = collection.nfts?.reduce((acc: number, nft: NftProps) => acc + (nft.price || 0), 0) || 0;
   const floorPrice = Math.min(...(collection.nfts?.map(nft => nft.price || 0) || [0]));
 
   if (viewMode === 'list') {
@@ -85,7 +81,7 @@ const CollectionCard = ({ collection, viewMode = 'grid' }: { collection: Collect
             <div className="flex items-center gap-4 mb-3">
               <div className="flex items-center gap-2">
                 <img 
-                  src={collection.owner.avatar} 
+                  src={collection.owner.profilePic} 
                   alt={collection.owner.name}
                   className="w-6 h-6 rounded-full"
                 />
@@ -99,7 +95,7 @@ const CollectionCard = ({ collection, viewMode = 'grid' }: { collection: Collect
                 </div>
                 <div className="flex items-center gap-1 text-cryptogen-blue">
                   <DollarSign className="w-4 h-4" />
-                  <span>Floor: {floorPrice} {collection.nfts?.[0]?.currency || 'ETH'}</span>
+                  <span>Floor: {floorPrice} {collection.nfts?.[0]?.floorPrice || 'ETH'}</span>
                 </div>
               </div>
             </div>
@@ -166,7 +162,7 @@ const CollectionCard = ({ collection, viewMode = 'grid' }: { collection: Collect
         
         <div className="flex items-center gap-2 mb-3">
           <img 
-            src={collection.owner.avatar} 
+            src={collection.owner.profilePic} 
             alt={collection.owner.name}
             className="w-6 h-6 rounded-full"
           />
@@ -176,7 +172,7 @@ const CollectionCard = ({ collection, viewMode = 'grid' }: { collection: Collect
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center gap-1 text-xs text-cryptogen-blue">
             <DollarSign className="w-3 h-3" />
-            <span>Floor: {floorPrice} {collection.nfts?.[0]?.currency || 'ETH'}</span>
+            <span>Floor: {floorPrice} {collection.nfts?.[0]?.floorPrice || 'ETH'}</span>
           </div>
           <div className="flex items-center gap-1 text-xs text-white/60">
             <BarChart3 className="w-3 h-3" />
@@ -278,7 +274,7 @@ const Collections = () => {
 
   return (
     <div className="min-h-screen bg-cryptogen-black text-white">
-      <Navbar />
+      <Header />
       
       <main className="pt-20">
         {/* Header */}
@@ -327,7 +323,7 @@ const Collections = () => {
                 <div className="text-2xl font-bold text-white mb-1">{totalVolume.toFixed(1)}</div>
                 <div className="text-white/60 text-sm">Volume Total</div>
                 <div className="text-purple-400 text-xs mt-1 flex items-center justify-center gap-1">
-                  <Fire className="w-3 h-3" />
+                  <MdLocalFireDepartment className="w-3 h-3" />
                   Múltiplas moedas
                 </div>
               </Card>
@@ -484,7 +480,7 @@ const Collections = () => {
                   Novas
                 </TabsTrigger>
                 <TabsTrigger value="trending">
-                  <Fire className="w-4 h-4 mr-1" />
+                  <MdLocalFireDepartment className="w-4 h-4 mr-1" />
                   Trending
                 </TabsTrigger>
                 <TabsTrigger value="digital-art">Arte Digital</TabsTrigger>
