@@ -77,11 +77,7 @@ export interface userApiDataI {
     Email: string;
     ProfileImage: string;
 }
-
-export interface OwnerI {
-    id:   string,
-    name: string,
-}
+ 
 
 export interface CollectionI {
     id: string,
